@@ -255,7 +255,7 @@ export default{
                 },
                 // 是否有儿子节点
                 isChildren:function(){
-                     return this.model.children.length>0 && this.num+1 != this.nodes;
+                     return this.num+1 != this.nodes;
                 },
                 // 展开/收起
                 prefixClass:function(){
@@ -267,6 +267,11 @@ export default{
                            returnChar = 'close'
 	                	}
 	                }
+
+	                if(!this.model.children && this.rootClass.indexOf("docu")==-1){
+                        returnChar = 'docu'
+	                }
+	                
 	                return returnChar;
                 },
                 liClassVal:function(){
@@ -279,7 +284,7 @@ export default{
                      return this.model.clickNode? "level"+this.num+' curSelectedNode':"level"+this.num;
                 },
                 ulClassVal:function(){
-                	return "level"+this.num+"  "+this.isChildren?'line':'';
+                	return this.isChildren && this.model.children ?"level"+this.num+' line':"level"+this.num;
                 }
         	},
             template: 

@@ -19,6 +19,11 @@ export default {
                 children:[],
                 path:"http://www.baidu.com"
       },{
+                id:220,
+                name:"游戏",
+                children:[],
+                path:"http://www.baidu.com"
+      },{
           id:2,
           name:"视频",
           children:[{
