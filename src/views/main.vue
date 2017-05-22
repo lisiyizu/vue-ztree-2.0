@@ -25,79 +25,82 @@ export default {
     vueZtree
   },
   mounted (){
-     this.ztreeDataSource = [{
-        id:220,
-        name:"游戏1",
-        children:[{
-          id:221,
-          name:"游戏2",
-          path:"",
-          children:[{
-              id:222,
-              name:"游戏3",
+      // 异步获取数据操作
+      setTimeout(()=>{ 
+         this.ztreeDataSource = [{
+            id:220,
+            name:"游戏1",
+            children:[{
+              id:221,
+              name:"游戏2",
               path:"",
               children:[{
-                  id:223,
-                  name:"游戏4",
+                  id:222,
+                  name:"游戏3",
                   path:"",
                   children:[{
-                      id:224,
-                      name:"游戏5",
+                      id:223,
+                      name:"游戏4",
                       path:"",
                       children:[{
-                          id:225,
-                          name:"游戏6",
+                          id:224,
+                          name:"游戏5",
                           path:"",
                           children:[{
-                              id:226,
-                              name:"游戏末节点",
-                              path:""
+                              id:225,
+                              name:"游戏6",
+                              path:"",
+                              children:[{
+                                  id:226,
+                                  name:"游戏末节点",
+                                  path:""
+                              }],
                           }],
                       }],
                   }],
               }],
-          }],
-       }],
-        path:"http://www.baidu.com"
-    },{
-        id:1,
-        name:"音乐",
-        children:[],
-        path:"http://www.baidu.com"
-    },{
-        id:2,
-        name:"视频",
-        children:[{
-           id:3,
-           name:"电影",
-           children:[{
-              id:4,
-              name:"国产电影",
-              path:""
-           },{
-              id:5,
-              name:"好莱坞电影",
-              path:""
-           },{
-              id:6,
-              name:"小语种电影",
-              path:""
-           }]
-        },{
-           id:7,
-           name:"短片",
-           children:[{
-              id:9,
-              name:"电视剧",
-              path:""
-           },{
-              id:10,
-              name:"短片",
-              path:""
-           }]
-        }],
-        path:""
-    }]
+           }],
+            path:"http://www.baidu.com"
+         },{
+            id:1,
+            name:"音乐",
+            children:[],
+            path:"http://www.baidu.com"
+         },{
+            id:2,
+            name:"视频",
+            children:[{
+               id:3,
+               name:"电影",
+               children:[{
+                  id:4,
+                  name:"国产电影",
+                  path:""
+               },{
+                  id:5,
+                  name:"好莱坞电影",
+                  path:""
+               },{
+                  id:6,
+                  name:"小语种电影",
+                  path:""
+               }]
+            },{
+               id:7,
+               name:"短片",
+               children:[{
+                  id:9,
+                  name:"电视剧",
+                  path:""
+               },{
+                  id:10,
+                  name:"短片",
+                  path:""
+               }]
+            }],
+            path:""
+         }]
+      },2000)
   }
 }
 </script>
