@@ -43,7 +43,17 @@ export default {
                   children:[{
                       id:224,
                       name:"游戏5",
-                      path:""
+                      path:"",
+                      children:[{
+                          id:225,
+                          name:"游戏6",
+                          path:"",
+                          children:[{
+                              id:226,
+                              name:"游戏末节点",
+                              path:""
+                          }],
+                      }],
                   }],
               }],
           }],
