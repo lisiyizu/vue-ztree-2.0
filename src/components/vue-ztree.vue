@@ -110,16 +110,22 @@
 <template>
 	<!--（ztree－🌲）-->
 	<div class="ztree_content_wrap">
-		<div class="zTreeDemoBackground left" v-if='list'>
+		<div class="zTreeDemoBackground left">
 			<ul class="ztree">
-				<ztree-item v-for='(m,i) in list' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='list.length' :callback='func' :trees.sync='list'></ztree-item>
+				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='list.length' :callback='func' :trees.sync='list'></ztree-item>
 			</ul>
 		</div>
 	</div>
 </template>
 
 <script>
+import Vue from 'vue'
 export default{
+	data(){
+       return {
+       	  treeDataSource:[]
+       }
+	},
 	props:{
 		// 树数据
         list:{
@@ -137,14 +143,6 @@ export default{
 			twoWay:true,
 			default:false
 		}
-	},
-	watch:{
-        'list':{
-        	handler:function(){
-        		this.initTreeData();
-        	},
-        	deep:true
-        }
 	},
 	methods:{
         initTreeData(){
@@ -170,9 +168,7 @@ export default{
 
            recurrenceFunc(tempList);
 
-           console.log(JSON.stringify(tempList));
-
-           this.list = tempList;
+           this.treeDataSource = tempList;
         }
 	},
 	components:{
@@ -300,8 +296,13 @@ export default{
 			</li>`
 		}
 	},
-	created(){
+	update(){
 		this.initTreeData();
+	},
+	mounted(){
+		Vue.nextTick(()=>{
+			this.initTreeData();
+		})
 	}
 }
 </script>

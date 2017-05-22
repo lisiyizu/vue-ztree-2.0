@@ -1,8 +1,8 @@
 <template>
    <div>
     <h1>{{ msg }}</h1>
-    <div style='width:280px;'>
-      <vue-ztree :list.sync='ztreeDataSource' :func.sync='nodeClick' :is-open='true'></vue-ztree>
+    <div style='width:280px;' v-if='ztreeDataSource.length>0'>
+       <vue-ztree :list.sync='ztreeDataSource' :func.sync='nodeClick' :is-open='true'></vue-ztree>
     </div>
    </div>
 </template>
@@ -13,50 +13,7 @@ export default {
   data () {
     return {
       msg: 'Hello Vue-Ztree-2.0!',
-      ztreeDataSource:[{
-                id:1,
-                name:"音乐",
-                children:[],
-                path:"http://www.baidu.com"
-      },{
-                id:220,
-                name:"游戏",
-                children:[],
-                path:"http://www.baidu.com"
-      },{
-          id:2,
-          name:"视频",
-          children:[{
-             id:3,
-             name:"电影",
-             children:[{
-                id:4,
-                name:"国产电影",
-                path:""
-             },{
-                id:5,
-                name:"好莱坞电影",
-                path:""
-             },{
-                id:6,
-                name:"小语种电影",
-                path:""
-             }]
-          },{
-             id:7,
-             name:"短片",
-             children:[{
-                id:9,
-                name:"电视剧",
-                path:""
-             },{
-                id:10,
-                name:"短片",
-                path:""
-             }]
-          }],
-          path:""
-      }]
+      ztreeDataSource:[]
     }
   },
   methods:{
@@ -66,6 +23,71 @@ export default {
   },
   components:{
     vueZtree
+  },
+  mounted (){
+     this.ztreeDataSource = [{
+        id:220,
+        name:"游戏1",
+        children:[{
+          id:221,
+          name:"游戏2",
+          path:"",
+          children:[{
+              id:222,
+              name:"游戏3",
+              path:"",
+              children:[{
+                  id:223,
+                  name:"游戏4",
+                  path:"",
+                  children:[{
+                      id:224,
+                      name:"游戏5",
+                      path:""
+                  }],
+              }],
+          }],
+       }],
+        path:"http://www.baidu.com"
+    },{
+        id:1,
+        name:"音乐",
+        children:[],
+        path:"http://www.baidu.com"
+    },{
+        id:2,
+        name:"视频",
+        children:[{
+           id:3,
+           name:"电影",
+           children:[{
+              id:4,
+              name:"国产电影",
+              path:""
+           },{
+              id:5,
+              name:"好莱坞电影",
+              path:""
+           },{
+              id:6,
+              name:"小语种电影",
+              path:""
+           }]
+        },{
+           id:7,
+           name:"短片",
+           children:[{
+              id:9,
+              name:"电视剧",
+              path:""
+           },{
+              id:10,
+              name:"短片",
+              path:""
+           }]
+        }],
+        path:""
+    }]
   }
 }
 </script>
