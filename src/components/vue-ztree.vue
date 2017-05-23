@@ -24,7 +24,7 @@
 
 	ul.ztree {border:1px solid #ddd;background: #ffffff;width:100%;height:auto;overflow-y:scroll;overflow-x:auto;}
 
-	.ztree * {padding:0; margin:0; font-size:14px; font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif}
+	.ztree * {padding:0; margin:0; font-size:15px; font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif}
 	.ztree {margin:0; padding:5px; color:#333 ;}
 	.ztree li{position: relative; padding:0; margin:0; list-style:none; line-height:24px; text-align:left; white-space:nowrap; outline:0}
 	.ztree li ul{ margin:0; padding:0 0 0 18px}
@@ -109,10 +109,10 @@
 
 <template>
 	<!--（ztree－🌲）-->
-	<div class="ztree_content_wrap">
+	<div class="ztree_content_wrap" v-if='treeDataSource.length>0'>
 		<div class="zTreeDemoBackground left">
 			<ul class="ztree">
-				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='list.length' :callback='func' :trees.sync='list'></ztree-item>
+				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :trees.sync='treeDataSource'></ztree-item>
 			</ul>
 		</div>
 	</div>
@@ -207,6 +207,8 @@ export default{
                 Func(m){
 
                     this.callback.call(null,m);
+
+                    console.log(JSON.parse(JSON.stringify(this.trees)));
                     
                     // 查找点击的子节点
                     var recurFunc = function(data){
@@ -224,6 +226,8 @@ export default{
                     }
 
                     recurFunc(this.trees);
+
+
                 },
                 open(m){
                     m.isFolder = !m.isFolder;
@@ -277,7 +281,7 @@ export default{
                 	 return "button level"+this.num+" switch "+this.rootClass+this.prefixClass;
                 },
                 aClassVal:function(){
-                     return this.model.clickNode? "level"+this.num+' curSelectedNode':"level"+this.num;
+                     return this.model.clickNode ? "level"+this.num+' curSelectedNode':"level"+this.num;
                 },
                 ulClassVal:function(){
                 	return this.isChildren && this.model.children ?"level"+this.num+' line':"level"+this.num;

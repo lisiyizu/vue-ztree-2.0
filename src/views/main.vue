@@ -2,7 +2,7 @@
    <div>
     <h1>{{ msg }}</h1>
     <div style='width:280px;' v-if='ztreeDataSource.length>0'>
-       <vue-ztree :list.sync='ztreeDataSource' :func.sync='nodeClick' :is-open='true'></vue-ztree>
+       <vue-ztree :list.sync='ztreeDataSource' :func.sync='nodeClick'  :is-open='false'></vue-ztree>
     </div>
    </div>
 </template>
@@ -19,6 +19,24 @@ export default {
   methods:{
     nodeClick:function(m){
        console.log(JSON.parse(JSON.stringify(m)));
+       // 动态加载子节点, 模拟ajax请求数据
+       // 请注意 id 不能重复哦。
+       if(m.hasOwnProperty("children")){
+          m.children.push({
+              id:+new Date(),
+              name:"动态加载节点1",
+              path:"",
+              clickNode:false,
+              isFolder:false,
+              children:[{
+                    id:+new Date()+1,
+                    name:"动态加载末节点",
+                    path:"",
+                    clickNode:false,
+                    isFolder:false,
+              }]
+          })
+       }
     }
   },
   components:{
@@ -100,7 +118,7 @@ export default {
             }],
             path:""
          }]
-      },2000)
+      },1000)
   }
 }
 </script>
