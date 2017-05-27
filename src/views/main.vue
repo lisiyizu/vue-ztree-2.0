@@ -1,5 +1,20 @@
+<style>
+body {font-family: Helvetica, sans-serif;}
+.iconClassRoot {
+   width:15px;
+   height:15px;
+   display: inline-block;
+   background: url("../images/ztree/root.png") no-repeat center/100% auto;
+}
+.iconClassNode {
+   width:15px;
+   height:15px;
+   display: inline-block;
+   background: url("../images/ztree/node.png") no-repeat center/100% auto;
+}
+</style>
 <template>
-  <div style='display:flex;flex:2'>
+  <div style='display:flex;flex:3'>
       <div style='flex:1'>
         <h1>Hello Ztree(非异步)</h1>
         <div style='width:280px;' v-if='ztreeDataSource.length>0'>
@@ -13,6 +28,15 @@
            <vue-ztree :list.sync='ztreeDataSourceSync' :func='nodeClick' :expand='expandClick'  :is-open='false'></vue-ztree>
         </div>
       </div>
+
+      <div style='flex:1'>
+        <h1>Hello Ztree(图标)</h1>
+        <div style='width:280px;' v-if='ztreeDataSourceList.length>0'>
+           <vue-ztree :list.sync='ztreeDataSourceList' :func='null' :expand='null'  :is-open='true'></vue-ztree>
+        </div>
+      </div>
+
+      
   </div>
 </template>
 
@@ -23,6 +47,41 @@ export default {
     return {
       msg: 'Hello Vue-Ztree-2.0!',
       ztreeDataSource:[],
+      ztreeDataSourceList:[{
+          id:880,
+          name:"娱乐",
+          iconClass:"iconClassRoot",
+          children:[{
+            id:881,
+            name:"游戏",
+            iconClass:"iconClassNode",
+          },{
+            id:882,
+            name:"电影",
+            iconClass:"iconClassNode",
+          },{
+            id:883,
+            name:"新闻",
+            iconClass:"iconClassNode",
+          }]
+      },{
+          id:990,
+          name:"BAT",
+          iconClass:"iconClassRoot",
+          children:[{
+              id:991,
+              name:"马化腾",
+              iconClass:"iconClassNode",
+          },{
+              id:992,
+              name:"李彦宏",
+              iconClass:"iconClassNode",
+          },{
+              id:993,
+              name:"马云",
+              iconClass:"iconClassNode",
+          }]
+      }],
       ztreeDataSourceSync:[{
           id:220,
           name:"娱乐",
@@ -162,7 +221,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {font-family: Helvetica, sans-serif;}
-</style>

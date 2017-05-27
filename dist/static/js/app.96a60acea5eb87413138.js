@@ -377,8 +377,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       template: `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
 				<a :class="aClassVal" @click='Func(model)'>
-				    <span v-if='model.iconPath'><img :src='model.iconPath' :style='model.iconStyle'></span>
-				    <span :class="{loadSyncNode:model.loadNode==1}"></span>
+				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
+				    <span :class='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>
 				</a>
 				<ul :class="ulClassVal" v-show='model.isFolder'>
@@ -423,6 +423,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -430,6 +454,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return {
          msg: 'Hello Vue-Ztree-2.0!',
          ztreeDataSource: [],
+         ztreeDataSourceList: [{
+            id: 880,
+            name: "娱乐",
+            iconClass: "iconClassRoot",
+            children: [{
+               id: 881,
+               name: "游戏",
+               iconClass: "iconClassNode"
+            }, {
+               id: 882,
+               name: "电影",
+               iconClass: "iconClassNode"
+            }, {
+               id: 883,
+               name: "新闻",
+               iconClass: "iconClassNode"
+            }]
+         }, {
+            id: 990,
+            name: "BAT",
+            iconClass: "iconClassRoot",
+            children: [{
+               id: 991,
+               name: "马化腾",
+               iconClass: "iconClassNode"
+            }, {
+               id: 992,
+               name: "李彦宏",
+               iconClass: "iconClassNode"
+            }, {
+               id: 993,
+               name: "马云",
+               iconClass: "iconClassNode"
+            }]
+         }],
          ztreeDataSourceSync: [{
             id: 220,
             name: "娱乐",
@@ -711,7 +770,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticStyle: {
       "display": "flex",
-      "flex": "2"
+      "flex": "3"
     }
   }, [_c('div', {
     staticStyle: {
@@ -753,9 +812,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.ztreeDataSourceSync = $event
       }
     }
+  })], 1) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "flex": "1"
+    }
+  }, [_c('h1', [_vm._v("Hello Ztree(图标)")]), _vm._v(" "), (_vm.ztreeDataSourceList.length > 0) ? _c('div', {
+    staticStyle: {
+      "width": "280px"
+    }
+  }, [_c('vue-ztree', {
+    attrs: {
+      "list": _vm.ztreeDataSourceList,
+      "func": null,
+      "expand": null,
+      "is-open": true
+    },
+    on: {
+      "update:list": function($event) {
+        _vm.ztreeDataSourceList = $event
+      }
+    }
   })], 1) : _vm._e()])])
 },staticRenderFns: []}
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.4b9d5d719692e372c93a.js.map
+//# sourceMappingURL=app.96a60acea5eb87413138.js.map
