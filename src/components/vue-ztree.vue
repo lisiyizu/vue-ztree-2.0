@@ -41,7 +41,7 @@
 	.ztree li a.tmpTargetNode_next {}
 	.ztree li a input.rename {height:14px; width:80px; padding:0; margin:0;
 		font-size:12px; border:1px #7EC4CC solid; *border:0px}
-	.ztree li span {line-height:16px; margin-right:2px}
+	.ztree li span {line-height:16px; margin-right:2px; top: 3px; display: inline-block;}
 	.ztree li span.button {line-height:0; margin:0; width:16px; height:16px; display: inline-block; vertical-align:middle;
 		border:0 none; cursor: pointer;outline:none;
 		background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
@@ -105,6 +105,14 @@
 	             background-color:#cfcfcf; border:1px #00B83F dotted; opacity:0.8; filter:alpha(opacity=80)}
 
 	.zTreeMask {z-index:10000; background-color:#cfcfcf; opacity:0.0; filter:alpha(opacity=0); position:absolute}
+
+	.loadSyncNode {
+		width: 16px;
+        height: 16px;
+        position: relative;
+        display: inline-block;
+		background-image:url("data:image/gif;base64,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")
+	}
 </style>
 
 <template>
@@ -112,7 +120,7 @@
 	<div class="ztree_content_wrap" v-if='treeDataSource.length>0'>
 		<div class="zTreeDemoBackground left">
 			<ul class="ztree">
-				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :trees.sync='treeDataSource'></ztree-item>
+				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :expandfunc='expand' :trees.sync='treeDataSource'></ztree-item>
 			</ul>
 		</div>
 	</div>
@@ -132,10 +140,13 @@ export default{
        	  	type:Array,
        	  	twoWay:true
         },
-        // 点击回调
+        // 点击节点回调
 		func:{
-			type:Function,
-			twoWay:true
+			type:Function
+		},
+		// 点击展开回调
+		expand:{
+            type:Function
 		},
 		// 是否展开
 		isOpen:{
@@ -146,18 +157,20 @@ export default{
 	},
 	methods:{
         initTreeData(){
-        	var vm = this;
 
             var tempList = JSON.parse(JSON.stringify(this.list));
             
             // 递归操作，增加删除一些属性。比如: 展开/收起
-            var recurrenceFunc = function(data){
+            var recurrenceFunc = (data) => {
+
                 data.forEach((m)=>{
                     m.clickNode = false;
                     m.children = m.children || [];
 
                     if(m.children.length>0){
-                   	  m.isFolder = vm.isOpen;
+                   	  m.isFolder = this.isOpen;
+                   	  m.isExpand = this.isOpen;
+                   	  m.loadNode = 0; 
                    	  recurrenceFunc(m.children);
                     }else{
                       delete m.children;
@@ -169,6 +182,8 @@ export default{
            recurrenceFunc(tempList);
 
            this.treeDataSource = tempList;
+
+           console.log(JSON.parse(JSON.stringify(this.treeDataSource)));
         }
 	},
 	components:{
@@ -199,19 +214,20 @@ export default{
                     twoWay:true
         		},
         		callback:{
-					type:Function,
-					twoWay:true
+					type:Function
+				},
+				expandfunc:{
+					type:Function
 				}
         	},
         	methods:{
                 Func(m){
-
-                    this.callback.call(null,m);
-
-                    console.log(JSON.parse(JSON.stringify(this.trees)));
+                    if(typeof this.expandfunc == "function") {
+	                    this.callback.call(null,m);
+	                }
                     
                     // 查找点击的子节点
-                    var recurFunc = function(data){
+                    var recurFunc = (data) => {
                         data.forEach(function(i){
                             if(i.id==m.id){
                               i.clickNode = true;
@@ -224,18 +240,27 @@ export default{
                             }
                         })
                     }
-
                     recurFunc(this.trees);
-
-
                 },
                 open(m){
-                    m.isFolder = !m.isFolder;
+                	//
+                	m.isExpand = !m.isExpand;
+           
+                	if(typeof this.expandfunc == "function" && m.isExpand) {
+                		if(m.loadNode!=2) {
+		                	//
+		                    this.expandfunc.call(null,m);
+		                }else {
+		                	m.isFolder = !m.isFolder;
+		                }
+	                } else {
+                        m.isFolder = !m.isFolder;
+	                }
                 }
         	},
         	computed:{
         		// 给（根 和 子树）赋值不同的样式
-                rootClass:function(){
+                rootClass(){
                 	 var strRootClass = '';
                      
                      // 根判断
@@ -254,11 +279,11 @@ export default{
                 	 return  strRootClass
                 },
                 // 是否有儿子节点
-                isChildren:function(){
+                isChildren(){
                      return this.num+1 != this.nodes;
                 },
                 // 展开/收起
-                prefixClass:function(){
+                prefixClass(){
                 	var returnChar = "";
                 	if(this.rootClass.indexOf("docu")==-1){
 	                	if(this.model.isFolder){
@@ -274,16 +299,16 @@ export default{
 	                
 	                return returnChar;
                 },
-                liClassVal:function(){
+                liClassVal(){
                 	 return "level"+this.num;
                 },
-                spanClassVal:function(){
+                spanClassVal(){
                 	 return "button level"+this.num+" switch "+this.rootClass+this.prefixClass;
                 },
-                aClassVal:function(){
+                aClassVal(){
                      return this.model.clickNode ? "level"+this.num+' curSelectedNode':"level"+this.num;
                 },
-                ulClassVal:function(){
+                ulClassVal(){
                 	return this.isChildren && this.model.children ?"level"+this.num+' line':"level"+this.num;
                 }
         	},
@@ -291,11 +316,12 @@ export default{
             `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
 				<a :class="aClassVal" @click='Func(model)'>
-				    <span><img v-if='model.iconPath' :src='model.iconPath' :style='model.iconStyle'></span>
+				    <span v-if='model.iconPath'><img :src='model.iconPath' :style='model.iconStyle'></span>
+				    <span :class="{loadSyncNode:model.loadNode==1}"></span>
 					<span class="node_name">{{model.name}}</span>
 				</a>
 				<ul :class="ulClassVal" v-show='model.isFolder'>
-					<ztree-item v-for="(item,i) in model.children" :key='i' :callback.sync='callback' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
+					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
 				</ul>
 			</li>`
 		}

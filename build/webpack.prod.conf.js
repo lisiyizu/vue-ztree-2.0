@@ -8,7 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-
+var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');// 第一步
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
@@ -53,6 +53,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
+      inlineSource: '.(js|css)$', // 第三步
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -63,6 +64,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
+    new HtmlWebpackInlineSourcePlugin(),// 第二步
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
