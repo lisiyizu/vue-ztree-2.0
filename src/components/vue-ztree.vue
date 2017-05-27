@@ -317,7 +317,7 @@ export default{
 				<span :class="spanClassVal" @click='open(model)'></span>
 				<a :class="aClassVal" @click='Func(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
-				    <span :class='model.iconClass' v-else></span>
+				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>
 				</a>
 				<ul :class="ulClassVal" v-show='model.isFolder'>

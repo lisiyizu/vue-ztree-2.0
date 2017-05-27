@@ -378,7 +378,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				<span :class="spanClassVal" @click='open(model)'></span>
 				<a :class="aClassVal" @click='Func(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
-				    <span :class='model.iconClass' v-else></span>
+				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>
 				</a>
 				<ul :class="ulClassVal" v-show='model.isFolder'>
@@ -837,4 +837,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.96a60acea5eb87413138.js.map
+//# sourceMappingURL=app.7dfcc7dc27d36cd0f7c1.js.map
