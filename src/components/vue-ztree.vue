@@ -30,7 +30,7 @@
 	.ztree li ul{ margin:0; padding:0 0 0 18px}
 	.ztree li ul.line{ background:url('../images/ztree/line_conn.gif') 0 0 repeat-y;}
 
-	.ztree li a {padding:1px 3px 0 0; margin:0; cursor:pointer; height:17px; color:#333; background-color: transparent;
+	.ztree li a {padding:1px 3px 0 5px; margin:0; cursor:pointer; height:17px; color:#333; background-color: transparent;
 		text-decoration:none; vertical-align:top; display: inline-block}
 	.ztree li a:hover {text-decoration:underline;color:blue;}
 	.ztree li a.curSelectedNode {padding-top:0px; background-color:#191d22; color:#fff; height:24px; border:1px #191d22 solid; opacity:0.8;}
