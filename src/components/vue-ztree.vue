@@ -142,15 +142,20 @@ export default{
         },
         // 点击节点回调
 		func:{
-			type:Function
+			type:Function,
+			default:null
 		},
 		// 点击展开回调
 		expand:{
-            type:Function
+            type:Function,
+            default:null
 		},
 		// 右击事件
 		contextmenu:{
-            type:Function
+            type:Function,
+            default:function(){
+            	console.log("defalt click contextmenu");
+            }
 		},
 		// 是否展开
 		isOpen:{
@@ -218,22 +223,13 @@ export default{
                     twoWay:true
         		},
         		callback:{
-					type:Function,
-					default:function(){
-		            	console.log("default click callback");
-		            }
+					type:Function
 				},
 				expandfunc:{
-					type:Function,
-					default:function(){
-		            	console.log("default click expandfunc");
-		            }
+					type:Function
 				},
 				cxtmenufunc:{
-					type:Function,
-					default:function(){
-		            	console.log("default click cxtmenufunc");
-		            }
+					type:Function
 				}
         	},
         	methods:{
@@ -337,7 +333,7 @@ export default{
 					<span class="node_name">{{model.name}}</span>
 				</a>
 				<ul :class="ulClassVal" v-show='model.isFolder'>
-					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
+					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :cxtmenufunc='cxtmenufunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
 				</ul>
 			</li>`
 		}
