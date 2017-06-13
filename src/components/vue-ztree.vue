@@ -120,7 +120,7 @@
 	<div class="ztree_content_wrap" v-if='treeDataSource.length>0'>
 		<div class="zTreeDemoBackground left">
 			<ul class="ztree">
-				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :expandfunc='expand' :trees.sync='treeDataSource'></ztree-item>
+				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :expandfunc='expand' :cxtmenufunc='contextmenu' :trees.sync='treeDataSource'></ztree-item>
 			</ul>
 		</div>
 	</div>
@@ -146,6 +146,10 @@ export default{
 		},
 		// 点击展开回调
 		expand:{
+            type:Function
+		},
+		// 右击事件
+		contextmenu:{
             type:Function
 		},
 		// 是否展开
@@ -214,10 +218,22 @@ export default{
                     twoWay:true
         		},
         		callback:{
-					type:Function
+					type:Function,
+					default:function(){
+		            	console.log("default click callback");
+		            }
 				},
 				expandfunc:{
-					type:Function
+					type:Function,
+					default:function(){
+		            	console.log("default click expandfunc");
+		            }
+				},
+				cxtmenufunc:{
+					type:Function,
+					default:function(){
+		            	console.log("default click cxtmenufunc");
+		            }
 				}
         	},
         	methods:{
@@ -315,7 +331,7 @@ export default{
             template: 
             `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a :class="aClassVal" @click='Func(model)'>
+				<a :class="aClassVal" @click='Func(model)' @contextmenu.prevent='cxtmenufunc'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>

@@ -215,6 +215,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     expand: {
       type: Function
     },
+    // 右击事件
+    contextmenu: {
+      type: Function
+    },
     // 是否展开
     isOpen: {
       type: Boolean,
@@ -280,10 +284,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           twoWay: true
         },
         callback: {
-          type: Function
+          type: Function,
+          default: function () {
+            console.log("default click callback");
+          }
         },
         expandfunc: {
-          type: Function
+          type: Function,
+          default: function () {
+            console.log("default click expandfunc");
+          }
+        },
+        cxtmenufunc: {
+          type: Function,
+          default: function () {
+            console.log("default click cxtmenufunc");
+          }
         }
       },
       methods: {
@@ -376,7 +392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       template: `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a :class="aClassVal" @click='Func(model)'>
+				<a :class="aClassVal" @click='Func(model)' @contextmenu.prevent='cxtmenufunc'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>
@@ -445,8 +461,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -454,6 +468,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return {
          msg: 'Hello Vue-Ztree-2.0!',
          ztreeDataSource: [],
+         show: true,
          ztreeDataSourceList: [{
             id: 880,
             name: "娱乐",
@@ -503,6 +518,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       // 点击节点
       nodeClick: function (m) {
          console.log(JSON.parse(JSON.stringify(m)));
+         this.show = !this.show;
+      },
+      // 右击事件
+      contextmenuClick: function () {
+         console.log("触发了自定义的contextmenuClick事件");
       },
       // 点击展开收起
       expandClick: function (m) {
@@ -730,6 +750,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "nodes": _vm.treeDataSource.length,
         "callback": _vm.func,
         "expandfunc": _vm.expand,
+        "cxtmenufunc": _vm.contextmenu,
         "trees": _vm.treeDataSource
       },
       on: {
@@ -783,8 +804,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('vue-ztree', {
     attrs: {
       "list": _vm.ztreeDataSource,
-      "func": null,
-      "expand": null,
       "is-open": false
     },
     on: {
@@ -816,15 +835,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "flex": "1"
     }
-  }, [_c('h1', [_vm._v("Hello Ztree(图标)")]), _vm._v(" "), (_vm.ztreeDataSourceList.length > 0) ? _c('div', {
+  }, [_c('h1', [_vm._v("Hello Ztree(右击事件)")]), _vm._v(" "), (_vm.ztreeDataSourceList.length > 0) ? _c('div', {
     staticStyle: {
       "width": "280px"
     }
   }, [_c('vue-ztree', {
     attrs: {
       "list": _vm.ztreeDataSourceList,
-      "func": null,
-      "expand": null,
+      "contextmenu": _vm.contextmenuClick,
       "is-open": true
     },
     on: {
@@ -837,4 +855,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.7dfcc7dc27d36cd0f7c1.js.map
+//# sourceMappingURL=app.18174dbc2416e4b25a00.js.map
