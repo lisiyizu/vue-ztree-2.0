@@ -136,8 +136,7 @@ export default {
                         loadNode:0
                   }]
               })
-            },1000)
-            
+            },1000);
          }
        }
     }
