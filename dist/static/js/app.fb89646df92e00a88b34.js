@@ -240,12 +240,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var recurrenceFunc = data => {
 
         data.forEach(m => {
-          m.clickNode = false;
+          m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
           m.children = m.children || [];
 
           if (m.children.length > 0) {
-            m.isFolder = this.isOpen;
-            m.isExpand = this.isOpen;
+            m.isFolder = m.hasOwnProperty("open") ? m.open : this.isOpen;
+            m.isExpand = m.hasOwnProperty("open") ? m.open : this.isOpen;
             m.loadNode = 0;
             recurrenceFunc(m.children);
           } else {
@@ -300,7 +300,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       methods: {
         Func(m) {
-          if (typeof this.expandfunc == "function") {
+          if (typeof this.callback == "function") {
             this.callback.call(null, m);
           }
 
@@ -469,6 +469,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             id: 880,
             name: "娱乐",
             iconClass: "iconClassRoot",
+            open: true,
             children: [{
                id: 881,
                name: "游戏",
@@ -476,6 +477,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, {
                id: 882,
                name: "电影",
+               clickNode: true,
                iconClass: "iconClassNode"
             }, {
                id: 883,
@@ -486,6 +488,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             id: 990,
             name: "BAT",
             iconClass: "iconClassRoot",
+            open: false,
             children: [{
                id: 991,
                name: "马化腾",
@@ -851,4 +854,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.8cc752ab21ae4f577223.js.map
+//# sourceMappingURL=app.fb89646df92e00a88b34.js.map
