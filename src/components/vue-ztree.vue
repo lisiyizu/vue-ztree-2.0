@@ -166,12 +166,10 @@ export default{
 	},
 	methods:{
         initTreeData(){
-
             var tempList = JSON.parse(JSON.stringify(this.list));
             
             // 递归操作，增加删除一些属性。比如: 展开/收起
             var recurrenceFunc = (data) => {
-
                 data.forEach((m)=>{
                     m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
                     m.children = m.children || [];
@@ -191,8 +189,6 @@ export default{
            recurrenceFunc(tempList);
 
            this.treeDataSource = tempList;
-
-           console.log(JSON.parse(JSON.stringify(this.treeDataSource)));
         }
 	},
 	components:{
