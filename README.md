@@ -2,13 +2,13 @@
 
 [vue-ztree-2 演示预览地址](https://lisiyizu.github.io/vue-ztree-2)
 
-## Vue基友交流群: 590688906
+### Vue小伙伴交流群: 590688906
 
 ![](vue-ztree-2.0.png)
 
 通过以下demo来实现
 
-###app.vue代码如下
+### app.vue代码如下
 
 ```html
 <template>
