@@ -1,0 +1,7 @@
+# 忽略 node_module 文件
+node_modules
+# 忽略 mac 特殊文件
+.DS_Store
+# 忽略es6文件
+.babelrc
+
