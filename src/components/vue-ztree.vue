@@ -174,14 +174,12 @@ export default{
                     m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
                     m.children = m.children || [];
 
-                    if(m.children.length>0){
-                   	  m.isFolder =  m.hasOwnProperty("open") ? m.open : this.isOpen;
-                   	  m.isExpand =  m.hasOwnProperty("open") ? m.open : this.isOpen;
-                   	  m.loadNode = 0; 
-                   	  recurrenceFunc(m.children);
-                    }else{
-                      delete m.children;
-                    }
+                   
+	               	m.isFolder =  m.hasOwnProperty("open") ? m.open : this.isOpen;
+	               	m.isExpand =  m.hasOwnProperty("open") ? m.open : this.isOpen;
+	               	m.loadNode = 0; 
+	               	recurrenceFunc(m.children);
+    
                     
                 })
             };
@@ -230,25 +228,26 @@ export default{
         	},
         	methods:{
                 Func(m){
-                    if(typeof this.callback == "function") {
-	                    this.callback.call(null,m);
-	                }
-                    
                     // 查找点击的子节点
-                    var recurFunc = (data) => {
-                        data.forEach(function(i){
+                    var recurFunc = (data,list) => {
+                        data.forEach((i)=>{
                             if(i.id==m.id){
-                              i.clickNode = true;
+                                i.clickNode = true;
+
+                                if(typeof this.callback == "function") {
+				                    this.callback.call(null,m,list);
+				                }
                             }else {
                               i.clickNode = false;
                             }
 
                             if(i.children){
-                            	recurFunc(i.children);
+                               recurFunc(i.children,i);
                             }
                         })
                     }
-                    recurFunc(this.trees);
+
+                    recurFunc(this.trees,this.trees);
                 },
                 open(m){
                 	//
@@ -273,15 +272,17 @@ export default{
                      
                      // 根判断
                 	 if(this.root=='0'){
-                       strRootClass =  (this.num==0 && !this.model.children) ? "roots_docu" : (this.nodes==1) || (this.num==0 && this.nodes!=this.num+1) ? 
-                         "root_" : (this.nodes == this.num+1) ? "bottom_" : "center_" 
+
+                       strRootClass =  (this.num==0 && this.model.children.length==0) ? "roots_docu" : (this.nodes==1) || (this.num==0 && this.nodes!=this.num+1) ? 
+                         "root_" : (this.nodes == this.num+1) ? "bottom_" : "center_";
                      
                      // 子树判断
                 	 }else if(this.root=='1') {
-                        strRootClass =  this.nodes>1 && this.model.children && this.nodes!=this.num+1
+
+                        strRootClass =  this.nodes>1 && this.model.children.length>0 && this.nodes!=this.num+1
                          ? "center_" : 
                             (this.num == 0 && this.nodes>1) || (this.nodes!=this.num+1) ? "center_docu" : 
-                                 this.nodes == 1&&this.num!=0 || (this.nodes==this.num+1 && this.model.children)   ? "bottom_" : "bottom_docu";
+                                 this.nodes == 1&&this.num!=0 || (this.nodes==this.num+1 && this.model.children.length>0)   ? "bottom_" : "bottom_docu";
                 	 }
 
                 	 return  strRootClass
@@ -301,7 +302,7 @@ export default{
 	                	}
 	                }
 
-	                if(!this.model.children && this.rootClass.indexOf("docu")==-1){
+	                if(this.model.children.length==0 && this.rootClass.indexOf("docu")==-1){
                         returnChar = 'docu'
 	                }
 	                
@@ -317,7 +318,7 @@ export default{
                      return this.model.clickNode ? "level"+this.num+' curSelectedNode':"level"+this.num;
                 },
                 ulClassVal(){
-                	return this.isChildren && this.model.children ?"level"+this.num+' line':"level"+this.num;
+                	return this.isChildren && this.model.children.length>0 ?"level"+this.num+' line':"level"+this.num;
                 }
         	},
             template: 

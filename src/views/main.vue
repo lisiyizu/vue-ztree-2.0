@@ -12,20 +12,33 @@ body {font-family: Helvetica, sans-serif;}
    display: inline-block;
    background: url("../images/ztree/node.png") no-repeat center/100% auto;
 }
+.operate ul>li{
+  float:left;
+  margin:10px 10px;
+  list-style-type: none;
+}
 </style>
 <template>
   <div style='display:flex;flex:3'>
       <div style='flex:1' >
         <h1>Hello Ztree(非异步)</h1>
+        <div class='operate'>
+           <ul>
+             <li><a href="javascript:void(0)" @click='up'>节点上移</a></li>
+             <li><a href="javascript:void(0)" @click='down'>节点下移</a></li>
+             <li><a href="javascript:void(0)" @click='delNode'>删除节点</a></li>
+             <li><a href="javascript:void(0)" @click='addNode'>新增节点</a></li>
+           </ul>
+        </div>
         <div style='width:280px;' v-if='ztreeDataSource.length>0'>
-           <vue-ztree :list.sync='ztreeDataSource' :is-open='false'></vue-ztree>
+           <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false'></vue-ztree>
         </div>
       </div>
 
       <div style='flex:1'>
         <h1>Hello Ztree(异步加载)</h1>
         <div style='width:280px;' v-if='ztreeDataSourceSync.length>0'>
-           <vue-ztree :list.sync='ztreeDataSourceSync' :func='nodeClick' :expand='expandClick'  :is-open='false'></vue-ztree>
+           <vue-ztree :list.sync='ztreeDataSourceSync' :expand='expandClick'  :is-open='false'></vue-ztree>
         </div>
       </div>
 
@@ -46,6 +59,8 @@ export default {
       msg: 'Hello Vue-Ztree-2.0!',
       ztreeDataSource:[],
       show:true,
+      parentNodeModel:[],//当前点击节点父亲对象
+      nodeModel:null, // 当前点击节点对象
       ztreeDataSourceList:[{
           id:880,
           name:"娱乐",
@@ -95,10 +110,84 @@ export default {
     }
   },
   methods:{
+    // 新增节点
+    addNode:function(){
+        if(this.nodeModel) {
+          this.nodeModel.children.push({
+              id:+new Date(),
+              name:"动态新增节点哦～",
+              path:"",
+              clickNode:false,
+              isFolder:false,
+              isExpand:false,
+              loadNode:0,
+              children:[]
+          });
+          this.nodeModel.isFolder = true;
+        }else {
+          console.log("请先选中节点");
+        }
+    },
+    // 删除节点
+    delNode:function(){
+        if(this.nodeModel) {
+           if(this.parentNodeModel.hasOwnProperty("children")) {
+              this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
+           }else if(this.parentNodeModel instanceof Array){
+              // 第一级根节点处理
+              this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
+           }
+           this.nodeModel = null;
+        }else {
+           console.log("请先选中节点");
+        }
+    },
+    // 节点上移
+    up:function(){
+       if(!this.nodeModel) console.log("请先选中节点");
+
+       if(this.parentNodeModel.hasOwnProperty("children")) {
+          var index = this.parentNodeModel.children.indexOf(this.nodeModel);
+          if(index-1>=0) {
+            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
+            this.parentNodeModel.children.splice(index-1,0,model[0]);
+          }
+       }else if(this.parentNodeModel instanceof Array){
+          // 第一级根节点处理
+          var index = this.parentNodeModel.indexOf(this.nodeModel);
+          if(index-1>=0) {
+            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
+            this.parentNodeModel.splice(index-1,0,model[0]);
+          }
+       }
+    },
+    // 节点下移
+    down:function(){
+       if(!this.nodeModel) console.log("请先选中节点");
+
+       if(this.parentNodeModel.hasOwnProperty("children")) {
+          var index = this.parentNodeModel.children.indexOf(this.nodeModel);
+          if(index+1<=this.parentNodeModel.children.length) {
+            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
+            this.parentNodeModel.children.splice(index+1,0,model[0]);
+          }
+       }else if(this.parentNodeModel instanceof Array){
+          // 第一级根节点处理
+          var index = this.parentNodeModel.indexOf(this.nodeModel);
+          if(index+1<=this.parentNodeModel.length) {
+            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
+            this.parentNodeModel.splice(index+1,0,model[0]);
+          }
+       }
+    },
     // 点击节点
-    nodeClick:function(m){
-       console.log(JSON.parse(JSON.stringify(m)));
+    nodeClick:function(m, parent){
        this.show = !this.show;
+       this.nodeModel = m;  // 当前点击节点对象
+       this.parentNodeModel = parent; //当前点击节点父亲对象
+
+       console.log(m);
+       console.log(parent)
     },
     // 右击事件
     contextmenuClick:function(){

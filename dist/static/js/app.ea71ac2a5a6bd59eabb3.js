@@ -233,12 +233,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     initTreeData() {
-
       var tempList = JSON.parse(JSON.stringify(this.list));
 
       // 递归操作，增加删除一些属性。比如: 展开/收起
       var recurrenceFunc = data => {
-
         data.forEach(m => {
           m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
           m.children = m.children || [];
@@ -257,8 +255,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       recurrenceFunc(tempList);
 
       this.treeDataSource = tempList;
-
-      console.log(JSON.parse(JSON.stringify(this.treeDataSource)));
     }
   },
   components: {
@@ -300,25 +296,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       methods: {
         Func(m) {
-          if (typeof this.callback == "function") {
-            this.callback.call(null, m);
-          }
-
           // 查找点击的子节点
-          var recurFunc = data => {
-            data.forEach(function (i) {
+          var recurFunc = (data, list) => {
+            data.forEach(i => {
               if (i.id == m.id) {
                 i.clickNode = true;
+
+                if (typeof this.callback == "function") {
+                  this.callback.call(null, m, list);
+                }
               } else {
                 i.clickNode = false;
               }
 
               if (i.children) {
-                recurFunc(i.children);
+                recurFunc(i.children, i);
               }
             });
           };
-          recurFunc(this.trees);
+
+          recurFunc(this.trees, this.trees);
         },
         open(m) {
           //
@@ -457,6 +454,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -465,6 +474,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          msg: 'Hello Vue-Ztree-2.0!',
          ztreeDataSource: [],
          show: true,
+         parentNodeModel: [], //当前点击节点父亲对象
+         nodeModel: {}, // 当前点击节点对象
          ztreeDataSourceList: [{
             id: 880,
             name: "娱乐",
@@ -514,10 +525,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       };
    },
    methods: {
+      // 删除节点
+      delNode: function () {
+         if (this.parentNodeModel.hasOwnProperty("children")) {
+            this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel), 1);
+         } else if (this.parentNodeModel instanceof Array) {
+            // 第一级根节点处理
+            this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel), 1);
+         }
+      },
+      // 节点上移
+      up: function () {
+         if (this.parentNodeModel.hasOwnProperty("children")) {
+            var index = this.parentNodeModel.children.indexOf(this.nodeModel);
+            if (index - 1 >= 0) {
+               var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel), 1);
+               this.parentNodeModel.children.splice(index - 1, 0, model[0]);
+            }
+         } else if (this.parentNodeModel instanceof Array) {
+            // 第一级根节点处理
+            var index = this.parentNodeModel.indexOf(this.nodeModel);
+            if (index - 1 >= 0) {
+               var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel), 1);
+               this.parentNodeModel.splice(index - 1, 0, model[0]);
+            }
+         }
+      },
+      // 节点下移
+      down: function () {
+         if (this.parentNodeModel.hasOwnProperty("children")) {
+            var index = this.parentNodeModel.children.indexOf(this.nodeModel);
+            if (index + 1 <= this.parentNodeModel.children.length) {
+               var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel), 1);
+               this.parentNodeModel.children.splice(index + 1, 0, model[0]);
+            }
+         } else if (this.parentNodeModel instanceof Array) {
+            // 第一级根节点处理
+            var index = this.parentNodeModel.indexOf(this.nodeModel);
+            if (index + 1 <= this.parentNodeModel.length) {
+               var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel), 1);
+               this.parentNodeModel.splice(index + 1, 0, model[0]);
+            }
+         }
+      },
       // 点击节点
-      nodeClick: function (m) {
+      nodeClick: function (m, parent) {
          console.log(JSON.parse(JSON.stringify(m)));
          this.show = !this.show;
+
+         this.nodeModel = m; // 当前点击节点对象
+         this.parentNodeModel = parent; //当前点击节点父亲对象
       },
       // 右击事件
       contextmenuClick: function () {
@@ -796,13 +853,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "flex": "1"
     }
-  }, [_c('h1', [_vm._v("Hello Ztree(非异步)")]), _vm._v(" "), (_vm.ztreeDataSource.length > 0) ? _c('div', {
+  }, [_c('h1', [_vm._v("Hello Ztree(非异步)")]), _vm._v(" "), _c('div', {
+    staticClass: "operate"
+  }, [_c('ul', [_c('li', [_c('a', {
+    attrs: {
+      "href": "javascript:void(0)"
+    },
+    on: {
+      "click": _vm.up
+    }
+  }, [_vm._v("节点上移")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "javascript:void(0)"
+    },
+    on: {
+      "click": _vm.down
+    }
+  }, [_vm._v("节点下移")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "javascript:void(0)"
+    },
+    on: {
+      "click": _vm.delNode
+    }
+  }, [_vm._v("删除节点")])])])]), _vm._v(" "), (_vm.ztreeDataSource.length > 0) ? _c('div', {
     staticStyle: {
       "width": "280px"
     }
   }, [_c('vue-ztree', {
     attrs: {
       "list": _vm.ztreeDataSource,
+      "func": _vm.nodeClick,
       "is-open": false
     },
     on: {
@@ -821,7 +902,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('vue-ztree', {
     attrs: {
       "list": _vm.ztreeDataSourceSync,
-      "func": _vm.nodeClick,
       "expand": _vm.expandClick,
       "is-open": false
     },
@@ -854,4 +934,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.fb89646df92e00a88b34.js.map
+//# sourceMappingURL=app.ea71ac2a5a6bd59eabb3.js.map
