@@ -192,6 +192,7 @@ export default {
     // 右击事件
     contextmenuClick:function(){
        console.log("触发了自定义的contextmenuClick事件");
+       alert("触发了自定义");
     },
     // 点击展开收起
     expandClick:function(m){
@@ -313,6 +314,11 @@ export default {
             path:""
          }]
       },1000)
+      
+      // 测试修改数据
+      setTimeout(()=>{ 
+         this.ztreeDataSource[0].name = "游戏被改了";
+      },5000);
   }
 }
 </script>

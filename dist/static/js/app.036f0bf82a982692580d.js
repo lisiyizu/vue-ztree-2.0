@@ -231,6 +231,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       default: false
     }
   },
+  watch: {
+    'list': {
+      handler: function () {
+        this.initTreeData();
+      },
+      deep: true
+    }
+  },
   methods: {
     initTreeData() {
       var tempList = JSON.parse(JSON.stringify(this.list));
@@ -241,14 +249,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
           m.children = m.children || [];
 
-          if (m.children.length > 0) {
-            m.isFolder = m.hasOwnProperty("open") ? m.open : this.isOpen;
-            m.isExpand = m.hasOwnProperty("open") ? m.open : this.isOpen;
-            m.loadNode = 0;
-            recurrenceFunc(m.children);
-          } else {
-            delete m.children;
-          }
+          m.isFolder = m.hasOwnProperty("open") ? m.open : this.isOpen;
+          m.isExpand = m.hasOwnProperty("open") ? m.open : this.isOpen;
+          m.loadNode = 0;
+          recurrenceFunc(m.children);
         });
       };
 
@@ -340,11 +344,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
           // 根判断
           if (this.root == '0') {
-            strRootClass = this.num == 0 && !this.model.children ? "roots_docu" : this.nodes == 1 || this.num == 0 && this.nodes != this.num + 1 ? "root_" : this.nodes == this.num + 1 ? "bottom_" : "center_";
+
+            strRootClass = this.num == 0 && this.model.children.length == 0 ? "roots_docu" : this.nodes == 1 || this.num == 0 && this.nodes != this.num + 1 ? "root_" : this.nodes == this.num + 1 ? "bottom_" : "center_";
 
             // 子树判断
           } else if (this.root == '1') {
-            strRootClass = this.nodes > 1 && this.model.children && this.nodes != this.num + 1 ? "center_" : this.num == 0 && this.nodes > 1 || this.nodes != this.num + 1 ? "center_docu" : this.nodes == 1 && this.num != 0 || this.nodes == this.num + 1 && this.model.children ? "bottom_" : "bottom_docu";
+
+            strRootClass = this.nodes > 1 && this.model.children.length > 0 && this.nodes != this.num + 1 ? "center_" : this.num == 0 && this.nodes > 1 || this.nodes != this.num + 1 ? "center_docu" : this.nodes == 1 && this.num != 0 || this.nodes == this.num + 1 && this.model.children.length > 0 ? "bottom_" : "bottom_docu";
           }
 
           return strRootClass;
@@ -364,7 +370,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
           }
 
-          if (!this.model.children && this.rootClass.indexOf("docu") == -1) {
+          if (this.model.children.length == 0 && this.rootClass.indexOf("docu") == -1) {
             returnChar = 'docu';
           }
 
@@ -380,7 +386,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return this.model.clickNode ? "level" + this.num + ' curSelectedNode' : "level" + this.num;
         },
         ulClassVal() {
-          return this.isChildren && this.model.children ? "level" + this.num + ' line' : "level" + this.num;
+          return this.isChildren && this.model.children.length > 0 ? "level" + this.num + ' line' : "level" + this.num;
         }
       },
       template: `<li :class="liClassVal">
@@ -466,6 +472,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -475,7 +482,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          ztreeDataSource: [],
          show: true,
          parentNodeModel: [], //当前点击节点父亲对象
-         nodeModel: {}, // 当前点击节点对象
+         nodeModel: null, // 当前点击节点对象
          ztreeDataSourceList: [{
             id: 880,
             name: "娱乐",
@@ -525,17 +532,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       };
    },
    methods: {
+      // 新增节点
+      addNode: function () {
+         if (this.nodeModel) {
+            this.nodeModel.children.push({
+               id: +new Date(),
+               name: "动态新增节点哦～",
+               path: "",
+               clickNode: false,
+               isFolder: false,
+               isExpand: false,
+               loadNode: 0,
+               children: []
+            });
+            this.nodeModel.isFolder = true;
+         } else {
+            console.log("请先选中节点");
+         }
+      },
       // 删除节点
       delNode: function () {
-         if (this.parentNodeModel.hasOwnProperty("children")) {
-            this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel), 1);
-         } else if (this.parentNodeModel instanceof Array) {
-            // 第一级根节点处理
-            this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel), 1);
+         if (this.nodeModel) {
+            if (this.parentNodeModel.hasOwnProperty("children")) {
+               this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel), 1);
+            } else if (this.parentNodeModel instanceof Array) {
+               // 第一级根节点处理
+               this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel), 1);
+            }
+            this.nodeModel = null;
+         } else {
+            console.log("请先选中节点");
          }
       },
       // 节点上移
       up: function () {
+         if (!this.nodeModel) console.log("请先选中节点");
+
          if (this.parentNodeModel.hasOwnProperty("children")) {
             var index = this.parentNodeModel.children.indexOf(this.nodeModel);
             if (index - 1 >= 0) {
@@ -553,6 +585,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       // 节点下移
       down: function () {
+         if (!this.nodeModel) console.log("请先选中节点");
+
          if (this.parentNodeModel.hasOwnProperty("children")) {
             var index = this.parentNodeModel.children.indexOf(this.nodeModel);
             if (index + 1 <= this.parentNodeModel.children.length) {
@@ -570,11 +604,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       // 点击节点
       nodeClick: function (m, parent) {
-         console.log(JSON.parse(JSON.stringify(m)));
          this.show = !this.show;
-
          this.nodeModel = m; // 当前点击节点对象
          this.parentNodeModel = parent; //当前点击节点父亲对象
+
+         console.log(m);
+         console.log(parent);
       },
       // 右击事件
       contextmenuClick: function () {
@@ -700,6 +735,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             path: ""
          }];
       }, 1000);
+
+      // 测试修改数据
+      setTimeout(() => {
+         this.ztreeDataSource[0].name = "游戏被改了";
+      }, 5000);
    }
 });
 
@@ -876,7 +916,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.delNode
     }
-  }, [_vm._v("删除节点")])])])]), _vm._v(" "), (_vm.ztreeDataSource.length > 0) ? _c('div', {
+  }, [_vm._v("删除节点")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "javascript:void(0)"
+    },
+    on: {
+      "click": _vm.addNode
+    }
+  }, [_vm._v("新增节点")])])])]), _vm._v(" "), (_vm.ztreeDataSource.length > 0) ? _c('div', {
     staticStyle: {
       "width": "280px"
     }
@@ -934,4 +981,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[7]);
-//# sourceMappingURL=app.ea71ac2a5a6bd59eabb3.js.map
+//# sourceMappingURL=app.036f0bf82a982692580d.js.map

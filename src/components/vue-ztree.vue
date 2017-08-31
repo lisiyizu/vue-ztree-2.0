@@ -164,6 +164,14 @@ export default{
 			default:false
 		}
 	},
+	watch:{
+        'list': {
+            handler:function(){
+            	this.initTreeData();
+            },
+            deep:true
+        }
+	},
 	methods:{
         initTreeData(){
             var tempList = JSON.parse(JSON.stringify(this.list));
@@ -184,9 +192,9 @@ export default{
                 })
             };
 
-           recurrenceFunc(tempList);
+            recurrenceFunc(tempList);
 
-           this.treeDataSource = tempList;
+            this.treeDataSource = tempList;
         }
 	},
 	components:{
