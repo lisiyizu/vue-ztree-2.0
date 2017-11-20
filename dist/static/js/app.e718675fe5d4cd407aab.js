@@ -1,13 +1,14 @@
 webpackJsonp([0],[
 /* 0 */,
 /* 1 */,
-/* 2 */
+/* 2 */,
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_Main__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_Main__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_Main___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__views_Main__);
 
 
@@ -24,14 +25,14 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 }));
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(4),
+  __webpack_require__(5),
   /* template */
-  __webpack_require__(13),
+  __webpack_require__(14),
   /* scopeId */
   null,
   /* cssModules */
@@ -42,7 +43,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59,7 +60,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -401,7 +402,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       template: `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a :class="aClassVal" @click='Func(model)' @contextmenu.prevent='cxtmenufunc'>
+				<a :class="aClassVal" @click='Func(model)' @contextmenu.prevent='cxtmenufunc(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 					<span class="node_name">{{model.name}}</span>
@@ -423,12 +424,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue__);
 //
 //
@@ -690,7 +691,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          this.dataList.push(m);
       },
       // 右击事件
-      contextmenuClick: function () {
+      contextmenuClick: function (m) {
+         console.log(m);
          console.log("触发了自定义的contextmenuClick事件");
          alert("触发了自定义");
       },
@@ -834,15 +836,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__App__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(3);
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
@@ -860,12 +862,6 @@ new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
 });
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
@@ -873,25 +869,9 @@ new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-
-/* styles */
-__webpack_require__(8)
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(5),
-  /* template */
-  __webpack_require__(12),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-
-module.exports = Component.exports
-
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 11 */
@@ -905,7 +885,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(6),
   /* template */
-  __webpack_require__(14),
+  __webpack_require__(13),
   /* scopeId */
   null,
   /* cssModules */
@@ -917,6 +897,28 @@ module.exports = Component.exports
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(10)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(7),
+  /* template */
+  __webpack_require__(15),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -947,7 +949,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           i = $event
         },
         "update:nodes": function($event) {
-          _vm.treeDataSource.length = $event
+          _vm.$set(_vm.treeDataSource, "length", $event)
         },
         "update:trees": function($event) {
           _vm.treeDataSource = $event
@@ -958,7 +960,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -970,7 +972,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },staticRenderFns: []}
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1017,7 +1019,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "operate"
   }, [_c('dl', {
     staticClass: "breadcrumb"
-  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.dataList), function(item, index) {
+  }, [_vm._m(0, false, false), _vm._v(" "), _vm._l((_vm.dataList), function(item, index) {
     return _c('li', {
       on: {
         "click": function($event) {
@@ -1101,5 +1103,5 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 }]}
 
 /***/ })
-],[7]);
-//# sourceMappingURL=app.55ae3909f6a6b3f20ad5.js.map
+],[8]);
+//# sourceMappingURL=app.e718675fe5d4cd407aab.js.map

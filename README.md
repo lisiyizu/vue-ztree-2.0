@@ -72,7 +72,8 @@ export default {
        console.log(JSON.parse(JSON.stringify(m)));
     },
     // 右击事件
-    contextmenuClick:function(){
+    contextmenuClick:function(m){
+       console.log(m)
        console.log("触发了自定义的contextmenuClick事件");
     },
     // 点击展开收起

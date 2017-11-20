@@ -260,7 +260,8 @@ export default {
        this.dataList.push(m);
     },
     // 右击事件
-    contextmenuClick:function(){
+    contextmenuClick:function(m){
+      console.log(m);
        console.log("触发了自定义的contextmenuClick事件");
        alert("触发了自定义");
     },
