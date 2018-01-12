@@ -289,13 +289,13 @@ export default{
                      
                      // 根判断
                 	 if(this.root=='0'){
-
+                       this.model.children = this.model.children || [];
                        strRootClass =  (this.num==0 && this.model.children.length==0) ? "roots_docu" : (this.nodes==1) || (this.num==0 && this.nodes!=this.num+1) ? 
                          "root_" : (this.nodes == this.num+1) ? "bottom_" : "center_";
                      
                      // 子树判断
                 	 }else if(this.root=='1') {
-
+                        this.model.children = this.model.children || [];
                         strRootClass =  this.nodes>1 && this.model.children.length>0 && this.nodes!=this.num+1
                          ? "center_" : 
                             (this.num == 0 && this.nodes>1) || (this.nodes!=this.num+1) ? "center_docu" : 

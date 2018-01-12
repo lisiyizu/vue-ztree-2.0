@@ -261,7 +261,8 @@ export default {
     },
     // 右击事件
     contextmenuClick:function(m){
-      console.log(m);
+       console.log(m);
+       console.log(event.target);
        console.log("触发了自定义的contextmenuClick事件");
        alert("触发了自定义");
     },
