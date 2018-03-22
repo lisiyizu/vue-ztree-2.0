@@ -167,6 +167,7 @@ export default {
               clickNode:false,
               isFolder:false,
               isExpand:false,
+              hover:false,
               loadNode:0,
               children:[]
           });
@@ -290,6 +291,7 @@ export default {
                   clickNode:false,
                   isFolder:false,
                   isExpand:false,
+                  hover:false,
                   loadNode:0,
                   children:[{
                         id:+new Date()+1,
@@ -298,6 +300,7 @@ export default {
                         clickNode:false,
                         isExpand:false,
                         isFolder:false,
+                        hover:false,
                         loadNode:0
                   }]
               })

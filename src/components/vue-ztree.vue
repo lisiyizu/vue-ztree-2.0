@@ -33,7 +33,7 @@
 	.ztree li a {padding:1px 3px 0 5px; margin:0; cursor:pointer; height:17px; color:#333; background-color: transparent;
 		text-decoration:none; vertical-align:top; display: inline-block}
 	.ztree li a:hover {text-decoration:underline;color:blue;}
-	.ztree li a.curSelectedNode {padding-top:0px; background-color:#191d22; color:#fff; height:24px; border:1px #191d22 solid; opacity:0.8;}
+	.ztree li a>span.curSelectedNode {padding-top:0px;  height:18px; opacity:0.8; padding: 3px 5px; background:#000; color:#fff;}
 	.ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#FFE6B0; color:black; height:16px; border:1px #FFB951 solid; opacity:0.8;}
 	.ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#316AC5; color:white; height:16px; border:1px #316AC5 solid;
 		opacity:0.8; filter:alpha(opacity=80)}
@@ -89,9 +89,13 @@
 	.ztree li span.button.ico_open{margin-right:2px; background-position:-110px -16px; vertical-align:top; *vertical-align:middle}
 	.ztree li span.button.ico_close{margin-right:2px; background-position:-110px 0; vertical-align:top; *vertical-align:middle}
 	.ztree li span.button.ico_docu{margin-right:2px; background-position:-110px -32px; vertical-align:top; *vertical-align:middle}
+	.ztree li span.button.add {margin:4px 2px 0 0; background-position:-143px 0px; vertical-align:top; *vertical-align:middle}
 	.ztree li span.button.edit {margin-right:2px; background-position:-110px -48px; vertical-align:top; *vertical-align:middle}
-	.ztree li span.button.remove {margin-right:2px; background-position:-110px -64px; vertical-align:top; *vertical-align:middle}
-
+	.ztree li span.button.remove {margin:4px 2px 0 0; background-position:-110px -64px; vertical-align:top; *vertical-align:middle}
+    .ztree li span.button.up { background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAe0lEQVQ4T2NkoBAwUqifgaYGKDAwMKyHutCRgYHhAzbX4nKBAQMDw34GBgYBqCaQZpAhF9ANwWZAAgMDw3wstoEMKWRgYFiALIfNAJBCfhyB+xHJVWAl+ALxP5ohWNWOGoA/EEFxrg8NyIsMDAygtIEBaJqUicpnFLsAAPsjERHQK2WXAAAAAElFTkSuQmCC) 
+    }
+    .ztree li span.button.down { background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmklEQVQ4T+2TsQ0CMQxF7ToFsEF6WwI2uFEYgVFuBEZhhBR2nxGOIrWRu4gkCCm6DrfOf3qJHYTJwsk87AcgooSIZzc0s6Sq157t0ICZrQ6ISPfsHwDtGJl5A4DDYD82ETnVveYRieiGiGsH8jKzu6o+vgK8SUQXRHxWEA8vqpo+zYZjjDEeQwgOgVLKknP2qzW13yr/+smmDd6ImjsRbQJ62AAAAABJRU5Erk) 
+    }
 	/*.ztree li span.button.ico_loading{margin-right:2px; background:url('../images/ztree/loading.gif') no-repeat scroll 0 0 transparent; 
 	            vertical-align:top; *vertical-align:middle}*/
 
@@ -184,6 +188,8 @@ export default{
 	                }
 
                     m.children = m.children || [];
+
+                    m.hover = false;
             
                     if(	!m.hasOwnProperty("isFolder") ) {
 	               		m.isFolder =  m.hasOwnProperty("open") ? m.open : this.isOpen;
@@ -210,6 +216,11 @@ export default{
 		// 组件
         ztreeItem:{
         	name: 'ztreeItem',
+        	data(){
+                return {
+                	parentNodeModel : null
+                }
+        	},
         	props: {
         		model:{
         			type:Object,
@@ -266,6 +277,16 @@ export default{
 
                     recurFunc(this.trees,this.trees);
                 },
+                getParentNode(m){
+                    // 查找点击的子节点
+                    var recurFunc = (data,list) => {
+                        data.forEach((i)=>{
+                            if(i.id==m.id) this.parentNodeModel = list;
+                            if(i.children) recurFunc(i.children,i);
+                        })
+                    }
+                    recurFunc(this.trees,this.trees);
+                },
                 open(m){
                 	//
                 	m.isExpand = !m.isExpand;
@@ -280,7 +301,83 @@ export default{
 	                } else {
                         m.isFolder = !m.isFolder;
 	                }
-                }
+                },
+                enterFunc(m){
+                    m.hover = true;
+                    this.getParentNode(m);
+                },
+                leaveFunc(m){
+                	m.hover = false;
+                },
+                // 新增节点
+			    addNode(nodeModel){
+			        if(nodeModel) {
+			          nodeModel.children.push({
+			              id:+new Date(),
+			              name:"动态新增节点哦～",
+			              path:"",
+			              clickNode:false,
+			              isFolder:false,
+			              isExpand:false,
+			              hover:false,
+			              loadNode:0,
+			              children:[]
+			          });
+			          nodeModel.isFolder = true;
+			        }else {
+			          console.log("请先选中节点");
+			        }
+			    },
+			    // 删除节点
+			    delNode(nodeModel){
+			        if(nodeModel) {
+			           if(this.parentNodeModel.hasOwnProperty("children")) {
+			              this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(nodeModel),1);
+			           }else if(this.parentNodeModel instanceof Array){
+			              // 第一级根节点处理
+			              this.parentNodeModel.splice(this.parentNodeModel.indexOf(nodeModel),1);
+			           }
+			           nodeModel = null;
+			        }else {
+			           console.log("请先选中节点");
+			        }
+			    },
+			    upNode(nodeModel){
+			       if(!nodeModel) console.log("请先选中节点");
+
+			       if(this.parentNodeModel.hasOwnProperty("children")) {
+			          var index = this.parentNodeModel.children.indexOf(nodeModel);
+			          if(index-1>=0) {
+			            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(nodeModel),1);
+			            this.parentNodeModel.children.splice(index-1,0,model[0]);
+			          }
+			       }else if(this.parentNodeModel instanceof Array){
+			          // 第一级根节点处理
+			          var index = this.parentNodeModel.indexOf(nodeModel);
+			          if(index-1>=0) {
+			            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(nodeModel),1);
+			            this.parentNodeModel.splice(index-1,0,model[0]);
+			          }
+			       }
+			    },
+			    downNode(nodeModel){
+			       if(!nodeModel) console.log("请先选中节点");
+
+			       if(this.parentNodeModel.hasOwnProperty("children")) {
+			          var index = this.parentNodeModel.children.indexOf(nodeModel);
+			          if(index+1<=this.parentNodeModel.children.length) {
+			            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(nodeModel),1);
+			            this.parentNodeModel.children.splice(index+1,0,model[0]);
+			          }
+			       }else if(this.parentNodeModel instanceof Array){
+			          // 第一级根节点处理
+			          var index = this.parentNodeModel.indexOf(nodeModel);
+			          if(index+1<=this.parentNodeModel.length) {
+			            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(nodeModel),1);
+			            this.parentNodeModel.splice(index+1,0,model[0]);
+			          }
+			       }
+			    }
         	},
         	computed:{
         		// 给（根 和 子树）赋值不同的样式
@@ -341,11 +438,20 @@ export default{
             template: 
             `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a :class="aClassVal" @click='Func(model)' @contextmenu.prevent='cxtmenufunc(model)'>
+				<a @click='Func(model)' @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)' @contextmenu.prevent='cxtmenufunc(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
-					<span class="node_name">{{model.name}}</span>
+					<span class="node_name" :class='aClassVal'>{{model.name}}</span>
+					<!--新增-->
+					<span v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
+					<!--删除-->
+				    <span v-show='model.hover' title='删除' class="button remove" @click="delNode(model)"></span>
+				    <!--上移-->
+				    <span v-show='model.hover' title='上移' class="button up" @click="upNode(model)"></span>
+				    <!--下移-->
+				    <span v-show='model.hover' title='下移' class="button down" @click="downNode(model)"></span>
 				</a>
+				
 				<ul :class="ulClassVal" v-show='model.isFolder'>
 					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :cxtmenufunc='cxtmenufunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
 				</ul>
