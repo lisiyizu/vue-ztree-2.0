@@ -26,23 +26,23 @@ body {font-family: Helvetica, sans-serif;}
   <div style='display:flex;flex:3'>
       <div style='flex:1' >
         <h1>Hello Ztree(非异步)</h1>
-        <div class='operate'>
+       <!--  <div class='operate'>
            <ul>
              <li><a href="javascript:void(0)" @click='up'>节点上移</a></li>
              <li><a href="javascript:void(0)" @click='down'>节点下移</a></li>
              <li><a href="javascript:void(0)" @click='delNode'>删除节点</a></li>
              <li><a href="javascript:void(0)" @click='addNode'>新增节点</a></li>
            </ul>
-        </div>
+        </div> -->
 
-        <div class='operate'>
+        <!-- <div class='operate'>
           <dl class="breadcrumb">
               <li><b style='color:red;'>导航点击树联动(注意：需要设置parentId)</b></li>
               <li v-for="(item,index) in dataList" @click="navigateClick(index,item)">
                  <span href="" v-for='item in index' style='margin-left:10px;'></span><a href='javascript:void(0)'>{{item.name}}（点击导航）</a>
               </li>
           </dl>
-      </div>
+       </div> -->
         <div style='width:280px;' v-if='ztreeDataSource.length>0'>
            <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false' :is-check='true'></vue-ztree>
         </div>
