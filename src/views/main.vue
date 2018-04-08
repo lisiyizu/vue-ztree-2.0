@@ -165,94 +165,6 @@ export default {
 
        this.ztreeDataSource = this.treeDeepCopy
     },
-    // 新增节点
-    addNode:function(){
-        if(this.nodeModel) {
-          this.nodeModel.children.push({
-              id:+new Date(),
-              name:"动态新增节点哦～",
-              path:"",
-              clickNode:false,
-              isFolder:false,
-              isExpand:false,
-              hover:false,
-              loadNode:0,
-              children:[]
-          });
-          this.nodeModel.isFolder = true;
-        }else {
-          console.log("请先选中节点");
-        }
-    },
-    // 删除节点
-    delNode:function(){
-        if(this.nodeModel) {
-           if(this.parentNodeModel.hasOwnProperty("children")) {
-              this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
-           }else if(this.parentNodeModel instanceof Array){
-              // 第一级根节点处理
-              this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
-           }
-           this.nodeModel = null;
-        }else {
-           console.log("请先选中节点");
-        }
-    },
-    // 节点上移
-    up:function(){
-       if(!this.nodeModel) console.log("请先选中节点");
-
-       if(this.parentNodeModel.hasOwnProperty("children")) {
-          var index = this.parentNodeModel.children.indexOf(this.nodeModel);
-          if(index-1>=0) {
-            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
-            this.parentNodeModel.children.splice(index-1,0,model[0]);
-          }
-       }else if(this.parentNodeModel instanceof Array){
-          // 第一级根节点处理
-          var index = this.parentNodeModel.indexOf(this.nodeModel);
-          if(index-1>=0) {
-            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
-            this.parentNodeModel.splice(index-1,0,model[0]);
-          }
-       }
-    },
-    // 节点下移
-    down:function(){
-       if(!this.nodeModel) console.log("请先选中节点");
-
-       if(this.parentNodeModel.hasOwnProperty("children")) {
-          var index = this.parentNodeModel.children.indexOf(this.nodeModel);
-          if(index+1<=this.parentNodeModel.children.length) {
-            var model = this.parentNodeModel.children.splice(this.parentNodeModel.children.indexOf(this.nodeModel),1);
-            this.parentNodeModel.children.splice(index+1,0,model[0]);
-          }
-       }else if(this.parentNodeModel instanceof Array){
-          // 第一级根节点处理
-          var index = this.parentNodeModel.indexOf(this.nodeModel);
-          if(index+1<=this.parentNodeModel.length) {
-            var model = this.parentNodeModel.splice(this.parentNodeModel.indexOf(this.nodeModel),1);
-            this.parentNodeModel.splice(index+1,0,model[0]);
-          }
-       }
-    },
-    findById:function(data,parentId) {
-        var vm =this;
-
-        for(var i = 0;i<data.length;i++){
-            if (parentId == data[i].id){
-                console.log(data[i])
-                vm.dataList.push(data[i]);
-                vm.findById(vm.ztreeDataSource, data[i].parentId)
-                return data[i]
-            }
-
-            if (data[i].hasOwnProperty('children')){
-                vm.findById(data[i].children,parentId)
-            }
-
-        }
-    },
     // 点击节点
     nodeClick:function(m, parent, trees){
        this.treeDeepCopy = trees;
@@ -294,6 +206,7 @@ export default {
 
               m.children.push({
                   id:+new Date(),
+                  parentId:m.id,
                   name:"动态加载节点1",
                   path:"",
                   clickNode:false,
@@ -303,6 +216,7 @@ export default {
                   loadNode:0,
                   children:[{
                         id:+new Date()+1,
+                        parentId:m.id,
                         name:"动态加载末节点",
                         path:"",
                         clickNode:false,

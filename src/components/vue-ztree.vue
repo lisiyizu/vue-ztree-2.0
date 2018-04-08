@@ -124,7 +124,7 @@
 	<div class="ztree_content_wrap" v-if='treeDataSource.length>0'>
 		<div class="zTreeDemoBackground left">
 			<ul class="ztree">
-				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :callback='func' :expandfunc='expand' :cxtmenufunc='contextmenu' :trees.sync='treeDataSource'></ztree-item>
+				<ztree-item v-for='(m,i) in treeDataSource' :key='i' :model.sync="m" :num.sync='i' root='0' :nodes.sync='treeDataSource.length' :ischeck='isCheck' :callback='func' :expandfunc='expand' :cxtmenufunc='contextmenu' :trees.sync='treeDataSource'></ztree-item>
 			</ul>
 		</div>
 	</div>
@@ -177,6 +177,7 @@ export default{
 	watch:{
         'list': {
             handler:function(){
+            	alert("哈哈");
             	this.initTreeData();
             },
             deep:true
@@ -264,6 +265,11 @@ export default{
 				},
 				cxtmenufunc:{
 					type:Function
+				},
+				ischeck:{
+					type:Boolean,
+					twoWay:true,
+					default:false
 				}
         	},
         	methods:{
@@ -361,12 +367,17 @@ export default{
                 },
                 // 新增节点
 			    addNode(nodeModel){
+			    	console.log(this);
 			        if(nodeModel) {
+			          var _nid = +new Date();
 			          nodeModel.children.push({
-			              id:+new Date(),
-			              name:"动态新增节点哦～",
+			              id:_nid,
+			              parentId:nodeModel.id,
+			              name:"动态节点哦～",
 			              path:"",
 			              clickNode:false,
+			              ckbool:false,
+			              isCheck:this.ischeck,
 			              isFolder:false,
 			              isExpand:false,
 			              hover:false,
@@ -374,6 +385,7 @@ export default{
 			              children:[]
 			          });
 			          nodeModel.isFolder = true;
+			          console.log(JSON.parse(JSON.stringify(nodeModel.children)));
 			        }else {
 			          console.log("请先选中节点");
 			        }
@@ -491,7 +503,7 @@ export default{
 				<a  @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)'  @contextmenu.prevent='cxtmenufunc(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
-				    <span v-if='model.isCheck' id="treeDemo_5_check" class="button chk" :class='{"checkbox_false_full":!model.ckbool,"checkbox_true_full":model.ckbool}' @click='ckFunc(model)' treenode_check=""></span>
+				    <span v-show='ischeck' id="treeDemo_5_check" class="button chk" :class='{"checkbox_false_full":!model.ckbool,"checkbox_true_full":model.ckbool}' @click='ckFunc(model)' treenode_check=""></span>
 					<span class="node_name" :class='aClassVal' @click='Func(model)' >{{model.name}}</span>
 					<!--新增-->
 					<span  v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
@@ -504,7 +516,7 @@ export default{
 				</a>
 				
 				<ul :class="ulClassVal" v-show='model.isFolder'>
-					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :cxtmenufunc='cxtmenufunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :trees.sync='trees'></ztree-item>
+					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :cxtmenufunc='cxtmenufunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :ischeck='ischeck' :trees.sync='trees'></ztree-item>
 				</ul>
 			</li>`
 		}
