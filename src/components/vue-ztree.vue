@@ -32,7 +32,7 @@
 
 	.ztree li a {padding:1px 3px 0 5px; margin:0; cursor:pointer; height:17px; color:#333; background-color: transparent;
 		text-decoration:none; vertical-align:top; display: inline-block}
-	.ztree li a:hover {text-decoration:underline;color:blue;}
+	.ztree li a:hover {text-decoration:none;color:blue;}
 	.ztree li a>span.curSelectedNode {padding-top:0px;  height:18px; opacity:0.8; padding: 3px 5px; background:#000; color:#fff;}
 	.ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#FFE6B0; color:black; height:16px; border:1px #FFB951 solid; opacity:0.8;}
 	.ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#316AC5; color:white; height:16px; border:1px #316AC5 solid;
