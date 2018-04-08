@@ -768,6 +768,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.ztreeDataSource = this.treeDeepCopy;
         },
+        findById: function (data, parentId) {
+
+            var vm = this;
+
+            for (var i = 0; i < data.length; i++) {
+
+                if (parentId == data[i].id) {
+
+                    console.log(data[i]);
+
+                    vm.dataList.push(data[i]);
+
+                    vm.findById(vm.ztreeDataSource, data[i].parentId);
+
+                    return data[i];
+                }
+
+                if (data[i].hasOwnProperty('children')) {
+
+                    vm.findById(data[i].children, parentId);
+                }
+            }
+        },
         // 点击节点
         nodeClick: function (m, parent, trees) {
             this.treeDeepCopy = trees;
@@ -1148,4 +1171,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[8]);
-//# sourceMappingURL=app.493c031de0dff2c056e4.js.map
+//# sourceMappingURL=app.7433ab8209c96c35618c.js.map

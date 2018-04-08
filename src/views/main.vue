@@ -165,6 +165,38 @@ export default {
 
        this.ztreeDataSource = this.treeDeepCopy
     },
+    findById:function(data,parentId) {
+
+        var vm =this;
+
+
+
+        for(var i = 0;i<data.length;i++){
+
+            if (parentId == data[i].id){
+
+                console.log(data[i])
+
+                vm.dataList.push(data[i]);
+
+                vm.findById(vm.ztreeDataSource, data[i].parentId)
+
+                return data[i]
+
+            }
+
+
+
+            if (data[i].hasOwnProperty('children')){
+
+                vm.findById(data[i].children,parentId)
+
+            }
+
+
+
+        }
+    },
     // 点击节点
     nodeClick:function(m, parent, trees){
        this.treeDeepCopy = trees;
