@@ -44,21 +44,21 @@ body {font-family: Helvetica, sans-serif;}
           </dl>
       </div>
         <div style='width:280px;' v-if='ztreeDataSource.length>0'>
-           <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false'></vue-ztree>
+           <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false' :is-check='true'></vue-ztree>
         </div>
       </div>
 
       <div style='flex:1'>
         <h1>Hello Ztree(异步加载)</h1>
         <div style='width:280px;' v-if='ztreeDataSourceSync.length>0'>
-           <vue-ztree :list.sync='ztreeDataSourceSync' :expand='expandClick'  :is-open='false'></vue-ztree>
+           <vue-ztree :list.sync='ztreeDataSourceSync' :expand='expandClick'  :is-open='false' :is-check='false'></vue-ztree>
         </div>
       </div>
 
       <div style='flex:1'>
         <h1>Hello Ztree(右击事件)</h1>
         <div style='width:280px;' v-if='ztreeDataSourceList.length>0'>
-           <vue-ztree :list.sync='ztreeDataSourceList' :contextmenu='contextmenuClick' :is-open='true'></vue-ztree>
+           <vue-ztree :list.sync='ztreeDataSourceList' :contextmenu='contextmenuClick' :is-open='true' :is-check='true'></vue-ztree>
         </div>
       </div>
   </div>
@@ -80,18 +80,22 @@ export default {
           name:"娱乐",
           iconClass:"iconClassRoot",
           open:true,
+          parentId:0,
           children:[{
             id:881,
             name:"游戏",
+            parentId:880,
             iconClass:"iconClassNode",
           },{
             id:882,
             name:"电影",
             clickNode:true,
+            parentId:880,
             iconClass:"iconClassNode",
           },{
             id:883,
             name:"新闻",
+            parentId:880,
             iconClass:"iconClassNode",
           }]
       },{
@@ -99,17 +103,21 @@ export default {
           name:"BAT",
           iconClass:"iconClassRoot",
           open:false,
+          parentId:0,
           children:[{
               id:991,
               name:"马化腾",
+              parentId:990,
               iconClass:"iconClassNode",
           },{
               id:992,
               name:"李彦宏",
+              parentId:990,
               iconClass:"iconClassNode",
           },{
               id:993,
               name:"马云",
+              parentId:990,
               iconClass:"iconClassNode",
           }]
       }],

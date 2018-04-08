@@ -234,6 +234,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			type: Boolean,
 			twoWay: true,
 			default: false
+		},
+		// 是否选中
+		isCheck: {
+			type: Boolean,
+			twoWay: true,
+			default: false
 		}
 	},
 	watch: {
@@ -253,6 +259,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				data.forEach(m => {
 					if (!m.hasOwnProperty("clickNode")) {
 						m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
+					}
+
+					if (!m.hasOwnProperty("ckbool")) {
+						m.ckbool = m.hasOwnProperty("ckbool") ? m.ckbool : false;
+					}
+
+					if (!m.hasOwnProperty("isCheck")) {
+						m.isCheck = m.hasOwnProperty("isCheck") ? m.isCheck : this.isCheck;
 					}
 
 					m.children = m.children || [];
@@ -327,7 +341,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 						data.forEach(i => {
 							if (i.id == m.id) {
 								i.clickNode = true;
-
 								if (typeof this.callback == "function") {
 									this.callback.call(null, m, list, this.trees);
 								}
@@ -343,12 +356,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 					recurFunc(this.trees, this.trees);
 				},
-				getParentNode(m) {
+				ckFunc(m) {
+					m.ckbool = !m.ckbool;
+
+					// 查找复选框的所有子节点
+					var recurFuncChild = data => {
+						data.forEach(i => {
+							i.ckbool = m.ckbool;
+							if (i.children) recurFuncChild(i.children);
+						});
+					};
+					recurFuncChild(m.children);
+
+					// 查找复选框的所有父节点
+					var isFindRootBool = false,
+					    parentId = m.parentId;
+					var recurFuncParent = (data, list) => {
+						data.forEach(i => {
+							if (!isFindRootBool) {
+								console.log(i.id + "，" + parentId);
+								if (i.id == parentId && parentId > 0) {
+									console.log("有情况");
+									parentId = i.parentId;
+									i.ckbool = m.ckbool;
+									// 重新查找
+									recurFuncParent(this.trees, this.trees);
+								} else if (i.id == m.id && i.parentId == 0) {
+									i.ckbool = m.ckbool;
+									isFindRootBool = true;
+								} else {
+									recurFuncParent(i.children, i);
+								}
+							}
+						});
+					};
+					recurFuncParent(this.trees, this.trees);
+				},
+				getParentNode(m, cb) {
 					// 查找点击的子节点
 					var recurFunc = (data, list) => {
 						data.forEach(i => {
 							if (i.id == m.id) this.parentNodeModel = list;
-							if (i.children) recurFunc(i.children, i);
+							if (i.children) {
+								typeof cb == "function" && cb.call(i.children);
+								recurFunc(i.children, i);
+							}
 						});
 					};
 					recurFunc(this.trees, this.trees);
@@ -370,7 +422,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				},
 				enterFunc(m) {
 					m.hover = true;
-					this.getParentNode(m);
+					this.getParentNode(m, null);
 				},
 				leaveFunc(m) {
 					m.hover = false;
@@ -499,12 +551,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			},
 			template: `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a @click='Func(model)' @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)' @contextmenu.prevent='cxtmenufunc(model)'>
+				<a  @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)'  @contextmenu.prevent='cxtmenufunc(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
-					<span class="node_name" :class='aClassVal'>{{model.name}}</span>
+				    <span v-if='model.isCheck' id="treeDemo_5_check" class="button chk" :class='{"checkbox_false_full":!model.ckbool,"checkbox_true_full":model.ckbool}' @click='ckFunc(model)' treenode_check=""></span>
+					<span class="node_name" :class='aClassVal' @click='Func(model)' >{{model.name}}</span>
 					<!--新增-->
-					<span v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
+					<span  v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
 					<!--删除-->
 				    <span v-show='model.hover' title='删除' class="button remove" @click="delNode(model)"></span>
 				    <!--上移-->
@@ -619,18 +672,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             name: "娱乐",
             iconClass: "iconClassRoot",
             open: true,
+            parentId: 0,
             children: [{
                id: 881,
                name: "游戏",
+               parentId: 880,
                iconClass: "iconClassNode"
             }, {
                id: 882,
                name: "电影",
                clickNode: true,
+               parentId: 880,
                iconClass: "iconClassNode"
             }, {
                id: 883,
                name: "新闻",
+               parentId: 880,
                iconClass: "iconClassNode"
             }]
          }, {
@@ -638,17 +695,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             name: "BAT",
             iconClass: "iconClassRoot",
             open: false,
+            parentId: 0,
             children: [{
                id: 991,
                name: "马化腾",
+               parentId: 990,
                iconClass: "iconClassNode"
             }, {
                id: 992,
                name: "李彦宏",
+               parentId: 990,
                iconClass: "iconClassNode"
             }, {
                id: 993,
                name: "马云",
+               parentId: 990,
                iconClass: "iconClassNode"
             }]
          }],
@@ -1161,7 +1222,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "list": _vm.ztreeDataSource,
       "func": _vm.nodeClick,
-      "is-open": false
+      "is-open": false,
+      "is-check": true
     },
     on: {
       "update:list": function($event) {
@@ -1180,7 +1242,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "list": _vm.ztreeDataSourceSync,
       "expand": _vm.expandClick,
-      "is-open": false
+      "is-open": false,
+      "is-check": false
     },
     on: {
       "update:list": function($event) {
@@ -1199,7 +1262,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "list": _vm.ztreeDataSourceList,
       "contextmenu": _vm.contextmenuClick,
-      "is-open": true
+      "is-open": true,
+      "is-check": true
     },
     on: {
       "update:list": function($event) {
@@ -1217,4 +1281,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[8]);
-//# sourceMappingURL=app.9dcd770fefc63d2ee5bc.js.map
+//# sourceMappingURL=app.4281194b34e4ddee17c0.js.map

@@ -47,7 +47,7 @@
 		background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
 		background-image:url("../images/ztree/zTreeStandard.png"); *background-image:url("../images/ztree/zTreeStandard.gif")}
 
-	.ztree li span.button.chk {width:13px; height:13px; margin:0 3px 0 0; cursor: auto}
+	.ztree li span.button.chk {width:13px; height:13px; margin:0 3px 0 0; cursor: pointer}
 	.ztree li span.button.chk.checkbox_false_full {background-position:0 0}
 	.ztree li span.button.chk.checkbox_false_full_focus {background-position:0 -14px}
 	.ztree li span.button.chk.checkbox_false_part {background-position:0 -28px}
@@ -166,6 +166,12 @@ export default{
 			type:Boolean,
 			twoWay:true,
 			default:false
+		},
+		// 是否选中
+		isCheck:{
+			type:Boolean,
+			twoWay:true,
+			default:false
 		}
 	},
 	watch:{
@@ -187,6 +193,14 @@ export default{
 	                    m.clickNode = m.hasOwnProperty("clickNode") ? m.clickNode : false;
 	                }
 
+	                if(!m.hasOwnProperty("ckbool") ) {
+	                	 m.ckbool = m.hasOwnProperty("ckbool") ? m.ckbool : false;
+	                }
+
+	                if(!m.hasOwnProperty("isCheck") ) {
+	                	 m.isCheck = m.hasOwnProperty("isCheck") ? m.isCheck : this.isCheck;
+	                }
+
                     m.children = m.children || [];
 
                     m.hover = false;
@@ -202,8 +216,6 @@ export default{
 	               	m.loadNode = 0; 
 	               	
 	               	recurrenceFunc(m.children);
-    
-                    
                 })
             };
 
@@ -261,7 +273,6 @@ export default{
                         data.forEach((i)=>{
                             if(i.id==m.id){
                                 i.clickNode = true;
-
                                 if(typeof this.callback == "function") {
 				                    this.callback.call(null,m,list,this.trees);
 				                }
@@ -277,12 +288,51 @@ export default{
 
                     recurFunc(this.trees,this.trees);
                 },
-                getParentNode(m){
+                ckFunc(m){
+                    m.ckbool = !m.ckbool;
+                   
+                    // 查找复选框的所有子节点
+                    var recurFuncChild = (data) => {
+                        data.forEach((i)=>{
+                        	i.ckbool = m.ckbool;
+                            if(i.children)  recurFuncChild(i.children);
+                        })
+                    }
+                    recurFuncChild(m.children);
+
+                    // 查找复选框的所有父节点
+                    var isFindRootBool  = false, parentId = m.parentId;
+                    var recurFuncParent = (data,list) => {
+	                        data.forEach((i)=>{ 
+	                        	if(!isFindRootBool) {
+	                        		console.log(i.id+"，"+parentId);
+		                        	if(i.id == parentId && parentId>0) {
+		                        		console.log("有情况");
+		                        		parentId = i.parentId;
+		                        		i.ckbool = m.ckbool;
+		                        		// 重新查找
+		                        		recurFuncParent(this.trees,this.trees);
+		                        	}else if(i.id == m.id && i.parentId==0) {
+		                        		i.ckbool = m.ckbool;
+		                        		isFindRootBool = true;
+		                        	}else {
+		                        		recurFuncParent(i.children,i);
+		                        	}
+	                        	}
+	                        })
+	                    
+                    }
+                    recurFuncParent(this.trees,this.trees);
+                },
+                getParentNode(m,cb){
                     // 查找点击的子节点
                     var recurFunc = (data,list) => {
                         data.forEach((i)=>{
                             if(i.id==m.id) this.parentNodeModel = list;
-                            if(i.children) recurFunc(i.children,i);
+                            if(i.children) {
+                            	(typeof cb == "function") && cb.call(i.children);
+                            	recurFunc(i.children,i);
+                            }
                         })
                     }
                     recurFunc(this.trees,this.trees);
@@ -304,7 +354,7 @@ export default{
                 },
                 enterFunc(m){
                     m.hover = true;
-                    this.getParentNode(m);
+                    this.getParentNode(m,null);
                 },
                 leaveFunc(m){
                 	m.hover = false;
@@ -438,12 +488,13 @@ export default{
             template: 
             `<li :class="liClassVal">
 				<span :class="spanClassVal" @click='open(model)'></span>
-				<a @click='Func(model)' @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)' @contextmenu.prevent='cxtmenufunc(model)'>
+				<a  @mouseenter='enterFunc(model)' @mouseleave='leaveFunc(model)'  @contextmenu.prevent='cxtmenufunc(model)'>
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
-					<span class="node_name" :class='aClassVal'>{{model.name}}</span>
+				    <span v-if='model.isCheck' id="treeDemo_5_check" class="button chk" :class='{"checkbox_false_full":!model.ckbool,"checkbox_true_full":model.ckbool}' @click='ckFunc(model)' treenode_check=""></span>
+					<span class="node_name" :class='aClassVal' @click='Func(model)' >{{model.name}}</span>
 					<!--新增-->
-					<span v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
+					<span  v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
 					<!--删除-->
 				    <span v-show='model.hover' title='删除' class="button remove" @click="delNode(model)"></span>
 				    <!--上移-->
