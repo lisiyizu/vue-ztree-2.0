@@ -1,67 +1,53 @@
 <style>
-body {font-family: Helvetica, sans-serif;}
+body {
+    font-family: Helvetica, sans-serif;
+}
 .iconClassRoot {
-   width:15px;
-   height:15px;
-   display: inline-block;
-   background: url("../images/ztree/root.png") no-repeat center/100% auto;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background: url("../images/ztree/root.png") no-repeat center/100% auto;
 }
 .iconClassNode {
-   width:15px;
-   height:15px;
-   display: inline-block;
-   background: url("../images/ztree/node.png") no-repeat center/100% auto;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background: url("../images/ztree/node.png") no-repeat center/100% auto;
 }
-.operate{
+.operate {
     display: flex;
 }
-.operate ul>li{
-
-  float:left;
-  margin:10px 10px;
-  list-style-type: none;
+.operate ul > li {
+    float: left;
+    margin: 10px 10px;
+    list-style-type: none;
 }
 </style>
 <template>
-  <div style='display:flex;flex:3'>
-      <div style='flex:1' >
-        <h1>Hello Ztree(非异步)</h1>
-       <!--  <div class='operate'>
-           <ul>
-             <li><a href="javascript:void(0)" @click='up'>节点上移</a></li>
-             <li><a href="javascript:void(0)" @click='down'>节点下移</a></li>
-             <li><a href="javascript:void(0)" @click='delNode'>删除节点</a></li>
-             <li><a href="javascript:void(0)" @click='addNode'>新增节点</a></li>
-           </ul>
-        </div> -->
-
-        <!-- <div class='operate'>
-          <dl class="breadcrumb">
-              <li><b style='color:red;'>导航点击树联动(注意：需要设置parentId)</b></li>
-              <li v-for="(item,index) in dataList" @click="navigateClick(index,item)">
-                 <span href="" v-for='item in index' style='margin-left:10px;'></span><a href='javascript:void(0)'>{{item.name}}（点击导航）</a>
-              </li>
-          </dl>
-       </div> -->
-        <div style='width:280px;' v-if='ztreeDataSource.length>0'>
-           <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false' :is-check='true'></vue-ztree>
+    <div style='display:flex;flex:3'>
+        <div style='flex:1'>
+            <h1>Hello Ztree(非异步)</h1>
+            <div style='width:280px;' v-if='ztreeDataSource.length>0'>
+                <vue-ztree :list.sync='ztreeDataSource' :func='nodeClick' :is-open='false' :is-check='true'></vue-ztree>
+            </div>
         </div>
-      </div>
 
-      <div style='flex:1'>
-        <h1>Hello Ztree(异步加载)</h1>
-        <div style='width:280px;' v-if='ztreeDataSourceSync.length>0'>
-           <vue-ztree :list.sync='ztreeDataSourceSync' :expand='expandClick'  :is-open='false' :is-check='false'></vue-ztree>
+        <div style='flex:1'>
+            <h1>Hello Ztree(异步加载)</h1>
+            <div style='width:280px;' v-if='ztreeDataSourceSync.length>0'>
+                <vue-ztree :list.sync='ztreeDataSourceSync' :expand='expandClick' :is-open='false'
+                    :is-check='false'></vue-ztree>
+            </div>
         </div>
-      </div>
 
-      <div style='flex:1'>
-        <h1>Hello Ztree(右击事件)</h1>
-        <div style='width:280px;' v-if='ztreeDataSourceList.length>0'>
-           <vue-ztree :list.sync='ztreeDataSourceList' :contextmenu='contextmenuClick' :is-open='true' :is-check='true'></vue-ztree>
+        <div style='flex:1'>
+            <h1>Hello Ztree(右击事件)</h1>
+            <div style='width:280px;' v-if='ztreeDataSourceList.length>0'>
+                <vue-ztree :list.sync='ztreeDataSourceList' :contextmenu='contextmenuClick' :is-open='true'
+                    :is-check='true'></vue-ztree>
+            </div>
         </div>
-      </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -166,34 +152,18 @@ export default {
        this.ztreeDataSource = this.treeDeepCopy
     },
     findById:function(data,parentId) {
-
         var vm =this;
 
-
-
         for(var i = 0;i<data.length;i++){
-
             if (parentId == data[i].id){
-
-                console.log(data[i])
-
                 vm.dataList.push(data[i]);
-
                 vm.findById(vm.ztreeDataSource, data[i].parentId)
-
                 return data[i]
-
             }
-
-
 
             if (data[i].hasOwnProperty('children')){
-
                 vm.findById(data[i].children,parentId)
-
             }
-
-
 
         }
     },

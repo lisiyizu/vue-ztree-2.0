@@ -198,6 +198,248 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -375,24 +617,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					recurFuncChild(m.children);
 
 					// 查找复选框的所有父节点
-					var isFindRootBool = false,
-					    parentId = m.parentId;
+					var parentId = m.parentId;
 					var recurFuncParent = (data, list) => {
 						data.forEach(i => {
-							if (!isFindRootBool) {
-								console.log(i.id + "，" + parentId);
-								if (i.id == parentId && parentId > 0) {
-									console.log("有情况");
-									parentId = i.parentId;
-									i.ckbool = m.ckbool;
-									// 重新查找
-									recurFuncParent(this.trees, this.trees);
-								} else if (i.id == m.id && i.parentId == 0) {
-									i.ckbool = m.ckbool;
-									isFindRootBool = true;
-								} else {
-									recurFuncParent(i.children, i);
-								}
+							if (i.id == parentId && parentId > 0) {
+								parentId = i.parentId;
+								// 判断父亲节点的儿子节点选中个数
+								var childrenCks = i.children.filter(child => {
+									return child.ckbool == true;
+								});
+								// 如果大于0, 证明不能取消选中状态
+								i.ckbool = childrenCks.length > 0;
+								// 递归查找
+								recurFuncParent(this.trees, i);
+							} else if (i.id == m.id && i.parentId == 0) {
+								i.ckbool = m.ckbool;
+								isFindRootBool = true;
+							} else {
+								recurFuncParent(i.children, i);
 							}
 						});
 					};
@@ -567,7 +809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				    <span :class="{loadSyncNode:model.loadNode==1}" v-if='model.loadNode==1'></span>
 				    <span :class='model.iconClass' v-show='model.iconClass' v-else></span>
 				    <span v-show='ischeck' id="treeDemo_5_check" class="button chk" :class='{"checkbox_false_full":!model.ckbool,"checkbox_true_full":model.ckbool}' @click='ckFunc(model)' treenode_check=""></span>
-					<span class="node_name" :class='aClassVal' @click='Func(model)' >{{model.name}}</span>
+					<span class="node_name" :class='aClassVal' @click='Func(model),open(model)' >{{model.name}}</span>
 					<!--新增-->
 					<span  v-show='model.hover' title='新增' class="button add" @click="addNode(model)"></span>
 					<!--删除-->
@@ -577,7 +819,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				    <!--下移-->
 				    <span v-show='model.hover' title='下移' class="button down" @click="downNode(model)"></span>
 				</a>
-				
 				<ul :class="ulClassVal" v-show='model.isFolder'>
 					<ztree-item v-for="(item,i) in model.children" :key='i' :callback='callback' :expandfunc='expandfunc' :cxtmenufunc='cxtmenufunc' :model.sync="item" :num.sync='i' root='1' :nodes.sync='model.children.length' :ischeck='ischeck' :trees.sync='trees'></ztree-item>
 				</ul>
@@ -602,20 +843,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_vue_ztree_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -769,24 +996,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.ztreeDataSource = this.treeDeepCopy;
         },
         findById: function (data, parentId) {
-
             var vm = this;
 
             for (var i = 0; i < data.length; i++) {
-
                 if (parentId == data[i].id) {
-
-                    console.log(data[i]);
-
                     vm.dataList.push(data[i]);
-
                     vm.findById(vm.ztreeDataSource, data[i].parentId);
-
                     return data[i];
                 }
 
                 if (data[i].hasOwnProperty('children')) {
-
                     vm.findById(data[i].children, parentId);
                 }
             }
@@ -1171,4 +1390,4 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 
 /***/ })
 ],[8]);
-//# sourceMappingURL=app.7433ab8209c96c35618c.js.map
+//# sourceMappingURL=app.c611be87f7014b75aa64.js.map
