@@ -51,7 +51,6 @@ body {
 </template>
 
 <script>
-import vueZtree from '../components/vue-ztree.vue'
 export default {
   data () {
     return {
@@ -232,9 +231,6 @@ export default {
          }
        }
     }
-  },
-  components:{
-    vueZtree
   },
   mounted (){
       // 异步获取数据操作

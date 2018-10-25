@@ -1,0 +1,18 @@
+{
+  "name": "vue-ztree-2.0",
+  "version": "1.0.2",
+  "description": "vue-ztree 树组件",
+  "main": "vue-ztree-2.0.common.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lisiyizu/vue-ztree-2.0.git"
+  },
+  "keywords": [
+    "vue2.0"
+  ],
+  "author": "kummy",
+  "license": "ISC"
+}

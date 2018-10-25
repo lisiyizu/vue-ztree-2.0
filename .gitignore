@@ -4,4 +4,5 @@ node_modules
 .DS_Store
 # 忽略es6文件
 .babelrc
-
+#
+lib

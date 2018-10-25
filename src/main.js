@@ -3,8 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import vueztree from 'vue-ztree-2.0/dist/vue-ztree-2.0.umd.min.js'
+import 'vue-ztree-2.0/dist/vue-ztree-2.0.css'
 
-Vue.config.productionTip = false
+Vue.use(vueztree)
 
 /* eslint-disable no-new */
 new Vue({
