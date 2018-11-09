@@ -1,6 +1,6 @@
 {
   "name": "vue-ztree-2.0",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "vue-ztree 树组件",
   "main": "vue-ztree-2.0.common.js",
   "scripts": {
