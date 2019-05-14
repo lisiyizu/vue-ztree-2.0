@@ -151,7 +151,7 @@ body {font-family: Helvetica, sans-serif;}
 
 ```
 
-###vue-ztree/初始化参数
+### vue-ztree/初始化参数
 <table  border="0" align="left">
 	<tbody>
 		<tr>
